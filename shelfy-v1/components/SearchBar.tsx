@@ -38,7 +38,7 @@ const SearchBar = () => {
             try {
                 // fetch from Datamuse API using their /sug endpoint and pass the query state variable
                 const response = await fetch(
-                    `https://api.datamuse.com/sug?s=${query}`, { signal: controller.signal } // We use controller.signal as a signla option in our fetch
+                    `https://api.datamuse.com/sug?s=${query}`, { signal: controller.signal } // We use controller.signal as a signal option in our fetch
                 );
 
                 // Receive data
@@ -99,7 +99,11 @@ const SearchBar = () => {
                             suggestions.map((suggestion, i) => (
                                 <li
                                     key={i}
+                                    tabIndex={0}
                                     onClick={() => handleSelect(suggestion)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') handleSelect(suggestion)
+                                    }}
                                     className="px-3 py-2 hover:bg-amber-100 cursor-pointer"
                                 >
                                     {suggestion}
