@@ -1,7 +1,7 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 const SearchBar = () => {
     // Keep track of current input
@@ -15,6 +15,9 @@ const SearchBar = () => {
 
     // Reset state variable for suggestion display
     const [isManualSelect, setIsManualSelect] = useState(false)
+
+    // Keep track of highlighted search suggestion in popup
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
     useEffect(() => {
 
@@ -32,6 +35,7 @@ const SearchBar = () => {
             if (query.trim().length < 2) {
                 setSuggestions([]);
                 setShowSuggestions(false);
+                setHighlightedIndex(-1);
                 return;
             }
 
@@ -49,6 +53,9 @@ const SearchBar = () => {
 
                 // show suggestions
                 setShowSuggestions(true);
+
+                // set highlighted suggestion to "none"
+                setHighlightedIndex(-1);
 
             } catch (err: any) {
                 if (err.name !== 'AbortError') {
@@ -75,47 +82,110 @@ const SearchBar = () => {
         setIsManualSelect(true);
         setQuery(value);
         setShowSuggestions(false);
+        setHighlightedIndex(-1);
     }
+
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const onDocPointerDown = (e: PointerEvent) => {
+            const el = wrapperRef.current as HTMLElement;
+            if (!el) return;
+            if (el.contains(e.target as Node)) return;
+            setShowSuggestions(false);
+            setHighlightedIndex(-1);
+        }
+        document.addEventListener('pointerdown', onDocPointerDown, true);
+        return () => document.removeEventListener('pointerdown', onDocPointerDown, true);
+    }, [])
 
     return (
         <div className="relative flex justify-center gap-3">
-            <form className="relative w-200">
-                <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={18}
-                />
+            <form className="relative w-[800px]" onSubmit={(e) => e.preventDefault()}>
+                <div ref={wrapperRef}>
+                    <Search
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        size={18}
+                    />
+                    <input
+                        name="search"
+                        placeholder="Search for an item..."
+                        value={query}
+                        className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                        onChange={handleChange}
+                        onKeyDown={(e) => {
+                            if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && suggestions.length > 0) {
+                                e.preventDefault();
+                                if (!showSuggestions) {
+                                    setShowSuggestions(true);
+                                    setHighlightedIndex(e.key === 'ArrowDown' ? 0 : suggestions.length - 1);
+                                    return;
+                                }
+                                setHighlightedIndex(prev => e.key === 'ArrowDown'
+                                    ? (prev + 1) % suggestions.length
+                                    : (prev - 1 + suggestions.length) % suggestions.length
+                                );
+                            } else if (e.key === 'Enter' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
+                                e.preventDefault();
+                                handleSelect(suggestions[highlightedIndex]);
+                            } else if (e.key === 'Tab' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
+                                e.preventDefault();
+                                handleSelect(suggestions[highlightedIndex]);
+                            } else if (e.key === 'Escape' && showSuggestions) {
+                                e.preventDefault();
+                                setShowSuggestions(false);
+                                setHighlightedIndex(-1);
+                            } else if (showSuggestions && (e.key === 'Home' || e.key === 'End') && suggestions.length > 0) {
+                                e.preventDefault();
+                                setHighlightedIndex(e.key === 'Home' ? 0 : suggestions.length - 1);
+                            }
+                        }}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        role="combobox"
+                        aria-autocomplete="list"
+                        aria-label="Search"
+                        aria-haspopup="listbox"
+                        aria-expanded={showSuggestions}
+                        aria-controls="suggestions"
+                        aria-activedescendant={highlightedIndex >= 0 ? "suggestion-" + highlightedIndex : undefined}
+                    />
 
-                <input
-                    name="search"
-                    placeholder="Search for an item..."
-                    value={query}
-                    className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                    onChange={handleChange}
-                />
-
-                {showSuggestions && (
-                    <ul className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md max-h-40 overflow-y-auto z-10">
-                        {suggestions.length > 0 ? (
-                            suggestions.map((suggestion, i) => (
-                                <li
-                                    key={i}
-                                    tabIndex={0}
-                                    onClick={() => handleSelect(suggestion)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') handleSelect(suggestion)
-                                    }}
-                                    className="px-3 py-2 hover:bg-amber-100 cursor-pointer"
-                                >
-                                    {suggestion}
-                                </li>
-                            ))
-                        ) : (
-                            <li className="px-3 py-2 text-gray-500">
-                                No results found.
-                            </li>
-                        )}
-                    </ul>
-                )}
+                    {showSuggestions && (
+                        <>
+                            <ul id="suggestions" role="listbox" className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md max-h-40 overflow-y-auto z-10">
+                                {suggestions.map((suggestion, i) => (
+                                    <li
+                                        key={i}
+                                        onPointerDown={(e) => {
+                                            e.preventDefault();
+                                            handleSelect(suggestion)
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                handleSelect(suggestion)
+                                            }}
+                                        }
+                                        className={`px-3 py-2 cursor-pointer ${
+                                            highlightedIndex === i ? "bg-green-200" : "hover:bg-green-100"
+                                        }`}
+                                        id={"suggestion-" + i}
+                                        role="option"
+                                        aria-selected={highlightedIndex === i}
+                                    >
+                                        {suggestion}
+                                    </li>
+                                    ))}
+                            </ul>
+                            {suggestions.length === 0 && (
+                                <div className="px-3 py-2 text-gray-500">No results found.</div>
+                            )}
+                        </>
+                    )}
+                </div>
             </form>
         </div>
     );
