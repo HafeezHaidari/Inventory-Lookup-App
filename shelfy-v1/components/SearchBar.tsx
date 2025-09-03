@@ -154,8 +154,8 @@ const SearchBar = () => {
                     />
 
                     {showSuggestions && (
-                        <>
-                            <ul id="suggestions" role="listbox" className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md max-h-40 overflow-y-auto z-10">
+                        <div className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md z-10">
+                            <ul id="suggestions" role="listbox" className="max-h-40 overflow-y-auto">
                                 {suggestions.map((suggestion, i) => (
                                     <li
                                         key={i}
@@ -181,9 +181,9 @@ const SearchBar = () => {
                                     ))}
                             </ul>
                             {suggestions.length === 0 && (
-                                <div className="px-3 py-2 text-gray-500">No results found.</div>
+                                <div role="status" aria-live="polite" className="px-3 py-2 text-gray-500">No results found.</div>
                             )}
-                        </>
+                        </div>
                     )}
                 </div>
             </form>
