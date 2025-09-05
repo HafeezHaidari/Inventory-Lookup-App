@@ -1,13 +1,13 @@
 import AppLogo from "@/components/AppLogo";
 import SearchBar from "@/components/SearchBar";
-import ProductCardPresenter from "@/components/ProductCardPresenter";
+import LandingProductsPresenter from "@/components/LandingProductsPresenter";
 
 export default function Home() {
   return (
       <>
           <AppLogo />
           <SearchBar />
-          <ProductCardPresenter />
+          <LandingProductsPresenter />
       </>
   );
 }
