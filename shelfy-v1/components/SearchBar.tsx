@@ -101,7 +101,7 @@ const SearchBar = () => {
 
     return (
         <div className="relative flex justify-center gap-3">
-            <form className="relative w-[800px]" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative w-[800px]" >
                 <div ref={wrapperRef}>
                     <Search
                         className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -121,10 +121,16 @@ const SearchBar = () => {
                                     setHighlightedIndex(e.key === 'ArrowDown' ? 0 : suggestions.length - 1);
                                     return;
                                 }
-                                setHighlightedIndex(prev => e.key === 'ArrowDown'
-                                    ? (prev + 1) % suggestions.length
-                                    : (prev - 1 + suggestions.length) % suggestions.length
-                                );
+                                setHighlightedIndex(prev => {
+                                    if (e.key === 'ArrowDown') {
+                                        return prev === -1 ? 0 : (Math.min(prev + 1, suggestions.length - 1));
+                                    } else {
+                                        if (prev > 0) return prev- 1;
+                                        if (prev === 0) return -1
+
+                                        return suggestions.length - 1;
+                                    }
+                                });
                             } else if (e.key === 'Enter' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
                                 e.preventDefault();
                                 handleSelect(suggestions[highlightedIndex]);
