@@ -1,7 +1,8 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const SearchBar = () => {
     // Keep track of current input
@@ -18,6 +19,11 @@ const SearchBar = () => {
 
     // Keep track of highlighted search suggestion in popup
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+    const router = useRouter();
+    const pathName = usePathname();
+    const searchParams = useSearchParams();
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
 
@@ -64,7 +70,7 @@ const SearchBar = () => {
             }
         };
 
-        const debounceTimer = setTimeout(fetchSuggestions, 300);
+        const debounceTimer = setTimeout(fetchSuggestions, 100);
 
         return () => {
             clearTimeout(debounceTimer);
@@ -85,6 +91,27 @@ const SearchBar = () => {
         setHighlightedIndex(-1);
     }
 
+    // Close the popover whenever the URL changes
+    useEffect(() => {
+        setShowSuggestions(false);
+        setHighlightedIndex(-1);
+        setSuggestions([]);
+
+    }, [pathName, searchParams]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault(); // stop the default refresh
+        if (!query.trim()) return; // do nothing if empty
+
+        // proactively close and blur before navigating
+        setShowSuggestions(false);
+        setHighlightedIndex(-1);
+        inputRef.current?.blur();
+
+        // Navigate to a new URL with query param
+        router.push(`/search?query=${encodeURIComponent(query)}`);
+    };
+
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -101,7 +128,7 @@ const SearchBar = () => {
 
     return (
         <div className="relative flex justify-center gap-3">
-            <form className="relative w-[800px]" >
+            <form onSubmit={handleSubmit} className="relative w-[800px]" >
                 <div ref={wrapperRef}>
                     <Search
                         className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
