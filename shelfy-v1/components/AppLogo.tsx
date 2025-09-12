@@ -15,7 +15,7 @@ const AppLogo = () => {
             </div>
             <div>
                 <p className='text-4xl font-sans font-medium'>
-                    Inventory Search
+                    Product Inventory Index
                 </p>
             </div>
         </div>
