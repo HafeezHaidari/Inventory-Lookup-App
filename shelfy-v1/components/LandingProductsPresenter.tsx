@@ -23,7 +23,7 @@ const LandingProductsPresenter = async () => {
                 <ul className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5">
                     {products.map((product: Product) => (
                         <li key={product.id}>
-                            <Link href={{ pathname: '/search', query: { tab: 'recommended', selected: product.id } }}>
+                            <Link href={{ pathname: '/search', query: { tab: 'recommended', selected: product.id, pin: '1' } }} prefetch>
                                 <ProductCard product={product} />
                             </Link>
                         </li>
