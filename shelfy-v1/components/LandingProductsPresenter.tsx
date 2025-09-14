@@ -3,12 +3,13 @@ import {Product} from "@/types/Product";
 import Link from "next/link";
 
 const getLandingPageProducts = async () => {
-    const response = await fetch('http://localhost:8080/api/products/recommended', {next: { revalidate: 120 }});
+    const response = await fetch('http://localhost:8080/api/products', {next: { revalidate: 120 }});
     const data = await response.json();
     if (!response.ok) {
         throw new Error("Fetch failed");
     }
-    return data;
+    const products = Array.isArray(data) ? data : (data?.content ?? []);
+    return products as any[]; // or your Product[] type
 }
 
 
