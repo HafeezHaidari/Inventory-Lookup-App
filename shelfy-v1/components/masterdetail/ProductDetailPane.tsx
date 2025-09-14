@@ -29,7 +29,7 @@ export default async function ProductDetailPane({ selected }: Props) {
                 <div>
                     <h1 className="text-2xl font-semibold">{p.name}</h1>
                     <p className="text-gray-500">{p.brand}</p>
-                    <p className="mt-3 text-xl font-medium">{p.defaultPrice} € / {p.unit}</p>
+                    <p className="mt-3 text-xl font-medium">{p.defaultPrice} € per {p.unit}</p>
                 </div>
             </div>
 
