@@ -15,7 +15,7 @@ export default function ProductMasterList({ products, selectedId, extraQuery }: 
     return (
         <div className="h-full overflow-y-auto px-1 pt-2">
             <ul className="space-y-2"> {/* single column */}
-                {products.map((it) => {
+                {products.length > 0 ? products.map((it) => {
                     const isActive = selectedId != null && Number(it.id) === selectedId;
                     // Merge current filters into the link
                     const query: Record<string, any> = { ...(extraQuery || {}), selected: it.id };
@@ -35,7 +35,7 @@ export default function ProductMasterList({ products, selectedId, extraQuery }: 
                             </Link>
                         </li>
                     );
-                })}
+                }) : <li className="p-4 text-gray-500">No products found{query ? ` for "${query}"` : ""}.</li>}
             </ul>
         </div>
     );
