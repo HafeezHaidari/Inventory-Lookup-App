@@ -4,9 +4,14 @@ import { Search } from 'lucide-react';
 import React, {useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
+
 const SearchBar = () => {
+
+    const searchParams = useSearchParams();
+    const initialQuery = searchParams.get('query') ?? '';
+
     // Keep track of current input
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState(initialQuery);
 
     // Generate suggestions
     const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -22,7 +27,6 @@ const SearchBar = () => {
 
     const router = useRouter();
     const pathName = usePathname();
-    const searchParams = useSearchParams();
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
@@ -134,90 +138,92 @@ const SearchBar = () => {
                         className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                         size={18}
                     />
-                    <input
-                        name="search"
-                        placeholder="Search for an item..."
-                        value={query}
-                        className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                        onChange={handleChange}
-                        onKeyDown={(e) => {
-                            if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && suggestions.length > 0) {
-                                e.preventDefault();
-                                if (!showSuggestions) {
-                                    setShowSuggestions(true);
-                                    setHighlightedIndex(e.key === 'ArrowDown' ? 0 : suggestions.length - 1);
-                                    return;
-                                }
-                                setHighlightedIndex(prev => {
-                                    if (e.key === 'ArrowDown') {
-                                        return prev === -1 ? 0 : (Math.min(prev + 1, suggestions.length - 1));
-                                    } else {
-                                        if (prev > 0) return prev- 1;
-                                        if (prev === 0) return -1
-
-                                        return suggestions.length - 1;
+                    <div className="relative">
+                        <input
+                            name="search"
+                            placeholder="Search for an item..."
+                            value={query}
+                            className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                            onChange={handleChange}
+                            onKeyDown={(e) => {
+                                if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && suggestions.length > 0) {
+                                    e.preventDefault();
+                                    if (!showSuggestions) {
+                                        setShowSuggestions(true);
+                                        setHighlightedIndex(e.key === 'ArrowDown' ? 0 : suggestions.length - 1);
+                                        return;
                                     }
-                                });
-                            } else if (e.key === 'Enter' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
-                                e.preventDefault();
-                                handleSelect(suggestions[highlightedIndex]);
-                            } else if (e.key === 'Tab' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
-                                e.preventDefault();
-                                handleSelect(suggestions[highlightedIndex]);
-                            } else if (e.key === 'Escape' && showSuggestions) {
-                                e.preventDefault();
-                                setShowSuggestions(false);
-                                setHighlightedIndex(-1);
-                            } else if (showSuggestions && (e.key === 'Home' || e.key === 'End') && suggestions.length > 0) {
-                                e.preventDefault();
-                                setHighlightedIndex(e.key === 'Home' ? 0 : suggestions.length - 1);
-                            }
-                        }}
-                        autoComplete="off"
-                        autoCorrect="off"
-                        autoCapitalize="none"
-                        spellCheck={false}
-                        role="combobox"
-                        aria-autocomplete="list"
-                        aria-label="Search"
-                        aria-haspopup="listbox"
-                        aria-expanded={showSuggestions}
-                        aria-controls="suggestions"
-                        aria-activedescendant={highlightedIndex >= 0 ? "suggestion-" + highlightedIndex : undefined}
-                    />
+                                    setHighlightedIndex(prev => {
+                                        if (e.key === 'ArrowDown') {
+                                            return prev === -1 ? 0 : (Math.min(prev + 1, suggestions.length - 1));
+                                        } else {
+                                            if (prev > 0) return prev- 1;
+                                            if (prev === 0) return -1
 
-                    {showSuggestions && (
-                        <div className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md z-10">
-                            <ul id="suggestions" role="listbox" className="max-h-40 overflow-y-auto">
-                                {suggestions.map((suggestion, i) => (
-                                    <li
-                                        key={i}
-                                        onPointerDown={(e) => {
-                                            e.preventDefault();
-                                            handleSelect(suggestion)
-                                        }}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
+                                            return suggestions.length - 1;
+                                        }
+                                    });
+                                } else if (e.key === 'Enter' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
+                                    e.preventDefault();
+                                    handleSelect(suggestions[highlightedIndex]);
+                                } else if (e.key === 'Tab' && showSuggestions && highlightedIndex >= 0 && suggestions.length > 0) {
+                                    e.preventDefault();
+                                    handleSelect(suggestions[highlightedIndex]);
+                                } else if (e.key === 'Escape' && showSuggestions) {
+                                    e.preventDefault();
+                                    setShowSuggestions(false);
+                                    setHighlightedIndex(-1);
+                                } else if (showSuggestions && (e.key === 'Home' || e.key === 'End') && suggestions.length > 0) {
+                                    e.preventDefault();
+                                    setHighlightedIndex(e.key === 'Home' ? 0 : suggestions.length - 1);
+                                }
+                            }}
+                            autoComplete="off"
+                            autoCorrect="off"
+                            autoCapitalize="none"
+                            spellCheck={false}
+                            role="combobox"
+                            aria-autocomplete="list"
+                            aria-label="Search"
+                            aria-haspopup="listbox"
+                            aria-expanded={showSuggestions}
+                            aria-controls="suggestions"
+                            aria-activedescendant={highlightedIndex >= 0 ? "suggestion-" + highlightedIndex : undefined}
+                        />
+
+                        {showSuggestions && (
+                            <div className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md z-50">
+                                <ul id="suggestions" role="listbox" className="max-h-40 overflow-y-auto">
+                                    {suggestions.map((suggestion, i) => (
+                                        <li
+                                            key={i}
+                                            onPointerDown={(e) => {
                                                 e.preventDefault();
                                                 handleSelect(suggestion)
                                             }}
-                                        }
-                                        className={`px-3 py-2 cursor-pointer ${
-                                            highlightedIndex === i ? "bg-green-200" : "hover:bg-green-100"
-                                        }`}
-                                        id={"suggestion-" + i}
-                                        role="option"
-                                        aria-selected={highlightedIndex === i}
-                                    >
-                                        {suggestion}
-                                    </li>
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    handleSelect(suggestion)
+                                                }}
+                                            }
+                                            className={`px-3 py-2 cursor-pointer ${
+                                                highlightedIndex === i ? "bg-green-200" : "hover:bg-green-100"
+                                            }`}
+                                            id={"suggestion-" + i}
+                                            role="option"
+                                            aria-selected={highlightedIndex === i}
+                                        >
+                                            {suggestion}
+                                        </li>
                                     ))}
-                            </ul>
-                            {suggestions.length === 0 && (
-                                <div role="status" aria-live="polite" className="px-3 py-2 text-gray-500">No results found.</div>
-                            )}
-                        </div>
-                    )}
+                                </ul>
+                                {suggestions.length === 0 && (
+                                    <div role="status" aria-live="polite" className="px-3 py-2 text-gray-500">No results found.</div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </form>
         </div>
