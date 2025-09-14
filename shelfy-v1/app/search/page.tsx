@@ -2,29 +2,30 @@ import ProductMasterList from "@/components/masterdetail/ProductMasterList";
 import ProductDetailPane from "@/components/masterdetail/ProductDetailPane";
 import ParamStripper from "@/app/search/ParamStripper";
 
-const fetchProducts = async (q?: string) => {
-    if (!q){
+const fetchProducts = async (query?: string) => {
+    if (!query){
         const res = await fetch(`http://localhost:8080/api/products/recommended`);
         const products = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch products.");
+        if (!res.ok) throw new Error("Failed to fetch recommended products.");
         return products;
     } else {
-        const res = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(q)}`);
+        const res = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(query)}`);
         const products = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch products.");
+        if (!res.ok) throw new Error("Failed to fetch searched products.");
         return products;
     }
 };
 
-export default async function Page({
-                                       searchParams,
-                                   }: { searchParams: { tab?: string; selected?: string; query?: string; pin?: string } }) {
-    const selectedId = searchParams.selected ? Number(searchParams.selected) : undefined;
-    const products = await fetchProducts(searchParams.query);
+export default async function Page(
+    { searchParams }:
+    { searchParams: Promise<{ tab?: string; selected?: string; query?: string; pin?: string }> }) {
+
+    const selectedId = (await searchParams).selected ? Number((await searchParams).selected) : undefined;
+    const products = await fetchProducts((await searchParams).query);
 
     const shouldPin =
-        searchParams.tab === 'recommended' &&
-        searchParams.pin === '1' &&
+        (await searchParams).tab === 'recommended' &&
+        (await searchParams).pin === '1' &&
         selectedId != null;
 
     if (shouldPin) {
@@ -43,7 +44,7 @@ export default async function Page({
             <section className="flex-1 h-full min-h-0 overflow-y-auto">
                 <ProductDetailPane selected={selectedId} />
             </section>
-            {searchParams.pin === '1' && <ParamStripper />}
+            { (await searchParams).pin === '1' && <ParamStripper />}
         </div>
     );
 }
