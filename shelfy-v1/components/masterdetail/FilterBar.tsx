@@ -1,12 +1,24 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams} from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useTransition } from "react";
 import {SORT_OPTIONS} from "@/types/SORT_OPTIONS";
 
 type Props = {tab?: string, query?: string};
 
 export default function FilterBar({ tab, query }: Props) {
+    const [brands, setBrands] = useState<string[]>([]);
+    useEffect(() => {
+        fetch("http://localhost:8080/api/products/brands")
+            .then(res => res.json())
+            .then(data => setBrands(data))
+            .catch(err => console.error("Failed to fetch brands", err));
+        return () => {
+
+        }
+    }, []);
+
     const router = useRouter();
     const pathname = usePathname();
     const sp = useSearchParams();
@@ -50,7 +62,7 @@ export default function FilterBar({ tab, query }: Props) {
             {/* Example brand checkboxes */}
             <fieldset className="flex items-center gap-2">
                 <legend className="sr-only">Brand</legend>
-                {["Acme", "CleanMax", "Umbrella"].map((b) => (
+                {brands.map((b) => (
                     <label key={b} className="flex items-center gap-1 text-sm">
                         <input
                             type="checkbox"
