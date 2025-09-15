@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppLogo from "@/components/AppLogo";
 import SearchBar from "@/components/SearchBar";
+import LoginButton from "@/components/LoginButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
       <header className="shrink-0">
+          <LoginButton />
           <AppLogo />
           <SearchBar />
       </header>
