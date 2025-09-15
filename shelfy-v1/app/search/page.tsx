@@ -24,7 +24,7 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
     if (filters?.sort) params.set("sort", filters.sort);
     if (filters?.brand?.length) for (const b of filters.brand) params.append("brand", b);
 
-    const base = "http://localhost:8080/api/products";
+    const base = "http://localhost:8080/api/products/search";
     const qs = params.toString();
     const url = qs ? `${base}?${qs}` : base;
 

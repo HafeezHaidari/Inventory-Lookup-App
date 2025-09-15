@@ -3,7 +3,7 @@ import {Product} from "@/types/Product";
 import Link from "next/link";
 
 const getLandingPageProducts = async () => {
-    const response = await fetch('http://localhost:8080/api/products', {next: { revalidate: 120 }});
+    const response = await fetch('http://localhost:8080/api/products/search', {next: { revalidate: 120 }});
     const data = await response.json();
     if (!response.ok) {
         throw new Error("Fetch failed");
