@@ -31,9 +31,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
       <header className="shrink-0">
-          <LoginButton />
-          <AppLogo />
-          <SearchBar />
+          <div className="flex items-center justify-between gap-4 px-4 py-2 ">
+              <div className="mb-16">
+                  <LoginButton />
+              </div>
+              <div className="flex flex-col items-center gap-1 justify-center items w-full">
+                  <AppLogo />
+                  <SearchBar />
+              </div>
+          </div>
       </header>
       <main className="flex-1 min-h-0">
           {children}
