@@ -57,7 +57,7 @@ export default function FilterBar({ tab, query }: Props) {
     return (
         <form
             onSubmit={(e) => e.preventDefault()}
-            className="flex flex-wrap items-center gap-4" // changed from space-y-3
+            className="flex flex-wrap items-center gap-4 justify-center w-full max-w-4xl mx-auto" // changed from space-y-3
         >
             {/* Example brand checkboxes */}
             <fieldset className="flex items-center gap-2">
