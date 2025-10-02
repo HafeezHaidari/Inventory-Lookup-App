@@ -4,6 +4,7 @@ import "./globals.css";
 import AppLogo from "@/components/AppLogo";
 import SearchBar from "@/components/SearchBar";
 import { LoginButton } from "@/components/LoginForm";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({
                   <LoginButton />
               </div>
               <div className="flex flex-col items-center gap-1 justify-center items w-full">
-                  <AppLogo />
+                  <Link href={"/"}>
+                      <AppLogo />
+                  </Link>
                   <SearchBar />
               </div>
           </div>
