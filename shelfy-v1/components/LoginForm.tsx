@@ -2,11 +2,15 @@
 
 import {useState} from "react";
 import LoginPopup from "@/components/LoginPopup";
-import {handleLogin} from "@/app/api/auth/login";
+import {loginWithFormData} from "@/app/lib/auth";
+import { useRouter } from "next/navigation";
 
 export const LoginButton = () => {
 
     const [openPopup, setOpenPopup] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const router = useRouter();
 
     return (
         <>
@@ -19,10 +23,20 @@ export const LoginButton = () => {
                     <h2>Welcome</h2>
                     <form
                         className="space-y-3"
-                        onSubmit={(e) => {
+                        onSubmit={async (e) => {
                             e.preventDefault();
-                            handleLogin;
-                            setOpenPopup(false);
+                            setError(null);
+                            try {
+                                const formData = new FormData(e.currentTarget);
+                                await loginWithFormData(formData);
+                                setOpenPopup(false);
+                                router.refresh();
+                                console.log("success");
+                            } catch (err: any) {
+                                setError(err?.message ?? "Login failed");
+                            } finally {
+                                setSubmitting(false);
+                            }
                         }}
                     >
                         <label className="block">
@@ -43,13 +57,24 @@ export const LoginButton = () => {
                             />
                         </label>
 
+                        {error && <p className="text-red-600 text-sm">{error}</p>}
+
                         <div className="mt-4 flex justify-end gap-2">
                             <button
+                                type="button"
+                                disabled={submitting}
                                 onClick={() => setOpenPopup(false)}
-                                type="submit"
-                                className="px-4 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700"
+                                className="px-4 py-2 rounded border"
                             >
-                                Login
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                disabled={submitting}
+                                className="px-4 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-60"
+                            >
+                                {submitting ? "Logging in..." : "Login"}
                             </button>
                         </div>
                     </form>
