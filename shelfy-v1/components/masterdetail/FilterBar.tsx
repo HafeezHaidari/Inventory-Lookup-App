@@ -10,7 +10,7 @@ type Props = {tab?: string, query?: string};
 export default function FilterBar({ tab, query }: Props) {
     const [brands, setBrands] = useState<string[]>([]);
     useEffect(() => {
-        fetch("http://localhost:8080/api/products/brands")
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE}/products/brands`)
             .then(res => res.json())
             .then(data => setBrands(data))
             .catch(err => console.error("Failed to fetch brands", err));

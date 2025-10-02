@@ -24,7 +24,7 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
     if (filters?.sort) params.set("sort", filters.sort);
     if (filters?.brand?.length) for (const b of filters.brand) params.append("brand", b);
 
-    const base = "http://localhost:8080/api/products/search";
+    const base = `${process.env.API_BASEURL}/products/search`;
     const qs = params.toString();
     const url = qs ? `${base}?${qs}` : base;
 
@@ -73,7 +73,7 @@ export default async function Page({
 
     return (
         <div className="h-full flex min-h-0">
-            <aside className="w-1/4 h-full min-h-0 border-r flex flex-col">
+            <aside className="h-full min-h-0 border-r flex flex-col overflow-x-auto min-w-[350px] max-w-full" style={{ width: 370 }}>
                 <div className="flex-1 min-h-0">
                     <ProductMasterList
                         products={products}
