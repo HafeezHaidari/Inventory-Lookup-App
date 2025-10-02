@@ -11,8 +11,6 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
                     <FilterBar />
                 </div>
             </div>
-
-            {/* The rest of the /search content (master/detail) */}
             <div className="flex-1 min-h-0">
                 {children}
             </div>
