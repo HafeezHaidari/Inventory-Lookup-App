@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import LoginPopup from "@/components/LoginPopup";
+import {handleLogin} from "@/app/api/auth/login";
 
 export const LoginButton = () => {
 
@@ -20,7 +21,7 @@ export const LoginButton = () => {
                         className="space-y-3"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            // handle login here
+                            handleLogin;
                             setOpenPopup(false);
                         }}
                     >
