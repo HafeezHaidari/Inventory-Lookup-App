@@ -1,6 +1,5 @@
 'use client';
 import { useSession } from '@/app/lib/SessionProvider';
-import LoginButton from '@/components/LoginButton';
 import {LoginForm} from "@/components/LoginForm";
 
 export default function AuthSection() {

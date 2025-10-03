@@ -6,7 +6,6 @@ import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
 import AuthSection from "@/components/AuthSection";
 import SessionProvider from "@/app/lib/SessionProvider";
-import {getSession} from "@/app/lib/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
