@@ -4,6 +4,7 @@ import {useState} from "react";
 import LoginPopup from "@/components/LoginPopup";
 import {loginWithFormData} from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
+import {useSession} from "@/app/lib/SessionProvider";
 
 export const LoginButton = () => {
 
@@ -26,12 +27,12 @@ export const LoginButton = () => {
                         onSubmit={async (e) => {
                             e.preventDefault();
                             setError(null);
+                            setSubmitting(true)
                             try {
                                 const formData = new FormData(e.currentTarget);
                                 await loginWithFormData(formData);
                                 setOpenPopup(false);
                                 router.refresh();
-                                console.log("success");
                             } catch (err: any) {
                                 setError(err?.message ?? "Login failed");
                             } finally {
