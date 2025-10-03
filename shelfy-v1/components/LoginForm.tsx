@@ -1,11 +1,12 @@
 'use client';
 
-import {useState} from "react";
+import React, {useState} from "react";
 import LoginPopup from "@/components/LoginPopup";
 import {loginWithFormData} from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
+import LoginButton from "@/components/LoginButton";
 
-export const LoginButton = () => {
+export const LoginForm = () => {
 
     const [openPopup, setOpenPopup] = useState(false)
     const [submitting, setSubmitting] = useState(false)
@@ -14,9 +15,7 @@ export const LoginButton = () => {
 
     return (
         <>
-            <button onClick={() => setOpenPopup(true)} className="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition">
-                Login
-            </button>
+            <LoginButton onClick={() => setOpenPopup(true)}/>
 
             <LoginPopup isOpen={openPopup} handleClose={() => setOpenPopup(false)}>
                 <div>
