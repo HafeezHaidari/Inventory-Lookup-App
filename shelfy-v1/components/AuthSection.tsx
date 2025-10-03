@@ -1,6 +1,7 @@
 'use client';
 import { useSession } from '@/app/lib/SessionProvider';
-import { LoginButton } from '@/components/LoginForm';
+import LoginButton from '@/components/LoginButton';
+import {LoginForm} from "@/components/LoginForm";
 
 export default function AuthSection() {
     const { isAuthenticated } = useSession();
@@ -9,5 +10,5 @@ export default function AuthSection() {
         return <div>Welcome!</div>
     }
 
-    return <LoginButton />;
+    return <LoginForm />;
 }
