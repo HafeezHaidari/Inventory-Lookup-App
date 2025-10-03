@@ -4,7 +4,7 @@ import "./globals.css";
 import AppLogo from "@/components/AppLogo";
 import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
-import AuthSection from "@/components/AuthSection";
+import AuthSection from "@/components/LoginLogout/AuthSection";
 import SessionProvider from "@/app/lib/SessionProvider";
 
 const geistSans = Geist({
