@@ -28,13 +28,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const user = await getSession();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
-      <SessionProvider initialSession={user ? { isAuthenticated: true, user} : {isAuthenticated: false, user: null}}>
+      <SessionProvider  initialSession={{isAuthenticated: false, user: null}}>
           <header className="shrink-0">
               <div className="flex items-center justify-between gap-4 px-4 py-2 ">
                   <div className="mb-16">
