@@ -16,6 +16,7 @@ export default function SessionProvider({ initialSession, children }: { initialS
                 else setSession({ isAuthenticated: false, user: null });
             } catch {}
         };
+        check();
         const onFocus = () => document.visibilityState === 'visible' && check();
         document.addEventListener('visibilitychange', onFocus);
         return () => document.removeEventListener('visibilitychange', onFocus);
