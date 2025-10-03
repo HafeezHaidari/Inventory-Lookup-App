@@ -4,7 +4,6 @@ import {useState} from "react";
 import LoginPopup from "@/components/LoginPopup";
 import {loginWithFormData} from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
-import {useSession} from "@/app/lib/SessionProvider";
 
 export const LoginButton = () => {
 

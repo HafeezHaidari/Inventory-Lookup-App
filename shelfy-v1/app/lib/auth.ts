@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 const base = process.env.NEXT_PUBLIC_API_BASE;
 
 export const loginWithFormData = async (formData: FormData) => {
