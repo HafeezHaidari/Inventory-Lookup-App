@@ -1,9 +1,9 @@
 'use client';
 
 import React, {useState} from "react";
-import LoginPopup from "@/components/LoginLogout/LoginPopup";
 import {loginWithFormData} from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
+import LoginPopup from "@/components/LoginLogout/LoginPopup";
 import LoginButton from "@/components/LoginLogout/LoginButton";
 
 export const LoginForm = () => {
