@@ -1,8 +1,9 @@
 import React from 'react'
+import CreateForm from "@/components/CreateForm";
 
 const Page = () => {
     return (
-        <div>Create</div>
+        <CreateForm/>
     )
 }
 export default Page
