@@ -5,6 +5,7 @@ import EditProductClient from "@/components/masterdetail/EditProductClient";
 import { useSession } from "@/app/lib/SessionProvider";
 import { Product } from "@/types/Product";
 import { Pencil, Trash2 } from "lucide-react";
+import DeleteConfirmation from "@/components/DeleteConfirmation";
 
 type Props = { selected?: number };
 
@@ -88,9 +89,7 @@ export default function ProductDetailPane({ selected }: Props) {
                             { isAuthenticated && (
                                 <div className="flex flex-row gap-3">
                                     <div className="pt-2 pr-4">
-                                        <button>
-                                            <Trash2 />
-                                        </button>
+                                        <DeleteConfirmation id={product.id} />
                                     </div>
                                     <div className="pt-2" onClick={() => setIsEditing(true)}>
                                         <button>
