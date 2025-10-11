@@ -1,10 +1,39 @@
-
+'use client';
 import Image from "next/image";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import EditProductClient from "@/components/masterdetail/EditProductClient";
+import { useSession } from "@/app/lib/SessionProvider";
+import { Product } from "@/types/Product";
+import { Pencil, Trash2 } from "lucide-react";
 
 type Props = { selected?: number };
 
-export default async function ProductDetailPane({ selected }: Props) {
+const base = process.env.NEXT_PUBLIC_API_BASE;
+
+export default function ProductDetailPane({ selected }: Props) {
+
+    const {isAuthenticated} = useSession();
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null);
+    const [isEditing, setIsEditing] = useState(false)
+
+    useEffect(() => {
+        if (selected == null) return;
+        setLoading(true);
+        setIsEditing(false);
+        fetch(`${base}/products/${selected}`, { cache: 'no-store' }).then(res => {
+            if (!res.ok) throw new Error("Failed to fetch product");
+            console.log(res);
+            return res.json();
+            })
+            .then(setProduct)
+            .catch(err => setError(err.message))
+            .finally(() => setLoading(false)
+        )
+        console.log(product);
+    }, [selected]);
+
     if (selected == null) {
         return (
             <div className="h-full grid place-items-center p-6 text-muted-foreground">
@@ -13,29 +42,105 @@ export default async function ProductDetailPane({ selected }: Props) {
         );
     }
 
-    const res = await fetch(`http://localhost:8080/api/products/${selected}`, { cache: 'no-store' });
-    if (!res.ok) {
+    if (loading) return <div className="p-6">Loading...</div>;
+
+    if (error) return <div className="p-6">{error}</div>;
+
+    if (!product) return null;
+
+    if (isEditing && product) {
         return (
-            <div className="p-6 text-red-600">
-                Failed to load product.
-            </div>
+            <EditProductClient
+                product={product}
+                onCancelAction={() => setIsEditing(false)}
+                onSavedAction={(updated) => {
+                    setProduct(prev => prev ? { ...prev, ...updated, id: prev.id } : updated);
+                    setIsEditing(false);
+                }}
+            />
         );
     }
-    const p = await res.json();
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex gap-6 items-start">
-                <Image src={p.imageUrl} alt={p.name} width={240} height={240} className="rounded-xl border" />
-                <div>
-                    <h1 className="text-2xl font-semibold">{p.name}</h1>
-                    <p className="text-gray-500">{p.brand}</p>
-                    <p className="mt-3 text-xl font-medium">{p.defaultPrice}€ per {p.unit}</p>
+        <section className="flex flex-col overflow-y-auto bg-gray-50 p-6 lg:p-8">
+            <div className="mb-6 flex flex-row gap-4">
+                <h1 className="text-4xl font-bold tracking-tight text-gray-900">{product.name}</h1>
+                <p className="mt-2 text-lg text-gray-600">{product.brand}</p>
+            </div>
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div className="lg:col-span-1">
+                    <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-md">
+                        <div className="relative aspect-square">
+                            <Image
+                                src={product.imageUrl}
+                                alt={product.name}
+                                fill
+                                sizes="(max-width: 1024px) 90vw, 90vw"
+                                priority
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="space-y-6 lg:col-span-2">
+                    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <div className="flex items-center justify-between">
+                            <h3 className="mb-4 text-xl font-semibold text-gray-900">Product Information</h3>
+                            { isAuthenticated && (
+                                <div className="flex flex-row gap-3">
+                                    <div className="pt-2 pr-4">
+                                        <button>
+                                            <Trash2 />
+                                        </button>
+                                    </div>
+                                    <div className="pt-2" onClick={() => setIsEditing(true)}>
+                                        <button>
+                                            <Pencil />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <dl className="space-y-4">
+                            <div>
+                                <dt className="text-sm font-medium text-gray-500">Price</dt>
+                                <dd className="mt-1 text-2xl font-bold text-green-600">
+                                    {Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.defaultPrice)}{" "}
+                                    <span className="text-base font-medium text-gray-500">/ {product.unit}</span>
+                                </dd>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <dt className="text-sm font-medium text-gray-500">Availability</dt>
+                                    <dd
+                                        className={`mt-1 inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-sm font-medium ${
+                                            product.active
+                                                ? "bg-green-50 text-green-700 ring-1 ring-inset ring-green-200"
+                                                : "bg-red-50 text-red-700 ring-1 ring-inset ring-red-200"
+                                        }`}
+                                    >
+                                        <span className="h-2 w-2 rounded-full bg-current"></span>
+                                        {product.active ? "Active" : "Inactive"}
+                                    </dd>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <dt className="text-sm font-medium text-gray-500">Brand</dt>
+                                    <dd className="mt-1 text-sm text-gray-900">{product.brand}</dd>
+                                </div>
+                                <div>
+                                    <dt className="text-sm font-medium text-gray-500">Unit</dt>
+                                    <dd className="mt-1 text-sm text-gray-900">{product.unit}</dd>
+                                </div>
+                            </div>
+                        </dl>
+                    </div>
+
                 </div>
             </div>
-
-            {/* nutrition / origin / info as your schema allows */}
-            {/* ... */}
-        </div>
+        </section>
     );
 }
