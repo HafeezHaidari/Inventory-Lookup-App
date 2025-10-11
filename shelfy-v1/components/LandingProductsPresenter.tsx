@@ -3,7 +3,7 @@ import {Product} from "@/types/Product";
 import Link from "next/link";
 
 const getLandingPageProducts = async () => {
-    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true`, {next: { revalidate: 120 }});
+    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true`, {next: { revalidate: 1 }});
     const data = await response.json();
     if (!response.ok) {
         throw new Error("Fetch failed");
@@ -18,8 +18,7 @@ const LandingProductsPresenter = async () => {
     const products = await getLandingPageProducts();
 
     return (
-        <section className="h-full min-h-0 overflow-y-auto"> {/* <- owns the scroll */}
-            {/* use padding instead of margin to create space */}
+        <section className="h-full min-h-0 overflow-y-auto">
             <div className="pt-8 px-4 pb-6">
                 <ul className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5">
                     {products.map((product: Product) => (
