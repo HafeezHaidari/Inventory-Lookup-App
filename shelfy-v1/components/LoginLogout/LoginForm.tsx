@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import {loginWithFormData} from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
-import LoginPopup from "@/components/LoginLogout/LoginPopup";
+import PopupModal from "@/components/LoginLogout/PopupModal";
 import LoginButton from "@/components/LoginLogout/LoginButton";
 
 export const LoginForm = () => {
@@ -17,7 +17,7 @@ export const LoginForm = () => {
         <>
             <LoginButton onClick={() => setOpenPopup(true)}/>
 
-            <LoginPopup isOpen={openPopup} handleClose={() => setOpenPopup(false)}>
+            <PopupModal isOpen={openPopup} handleClose={() => setOpenPopup(false)}>
                 <div>
                     <h2>Welcome</h2>
                     <form
@@ -78,7 +78,7 @@ export const LoginForm = () => {
                         </div>
                     </form>
                 </div>
-            </LoginPopup>
+            </PopupModal>
         </>
     )
 }
