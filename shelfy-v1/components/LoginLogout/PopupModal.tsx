@@ -7,7 +7,7 @@ interface PopupProps {
     handleClose: () => void;
 }
 
-const LoginPopup = ({
+const PopupModal = ({
     children,
     isOpen,
     handleClose}: PopupProps) => {
@@ -42,4 +42,4 @@ const LoginPopup = ({
         </ReactPortal>
     )
 }
-export default LoginPopup
+export default PopupModal
