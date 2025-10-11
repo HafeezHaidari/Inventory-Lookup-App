@@ -28,7 +28,7 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
     const qs = params.toString();
     const url = qs ? `${base}?${qs}` : base;
 
-    const res = await fetch(url, { next: { revalidate: 120 } });
+    const res = await fetch(url, { next: { revalidate: 1 } });
     if (!res.ok) throw new Error("Fetch failed");
     const data = await res.json();
 
