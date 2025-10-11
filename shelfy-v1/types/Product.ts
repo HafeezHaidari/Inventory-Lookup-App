@@ -5,6 +5,7 @@ export interface Product {
     unit: string,
     defaultPrice: number,
     imageUrl: string,
-    is_recommended: boolean,
+    recommended: boolean,
+    active: boolean
 }
 
