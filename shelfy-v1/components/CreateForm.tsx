@@ -53,15 +53,15 @@ const CreateForm = () => {
             body: formData
         }).then(res => res.json())
 
-            const product = {
-                "name": (form.elements.namedItem('productName') as HTMLInputElement).value.trim(),
-                "brand": (form.elements.namedItem('productBrand') as HTMLInputElement).value.trim(),
-                "unit": (form.elements.namedItem('productUnit') as HTMLInputElement).value.trim(),
-                "defaultPrice": Number((form.elements.namedItem('defaultPrice') as HTMLInputElement).value),
-                "recommended": (form.elements.namedItem('recommended') as HTMLSelectElement).value === 'yes',
-                "active": (form.elements.namedItem('active') as HTMLSelectElement).value === 'yes',
-                "imageUrl": results.url
-            };
+        const product = {
+            "name": (form.elements.namedItem('productName') as HTMLInputElement).value.trim(),
+            "brand": (form.elements.namedItem('productBrand') as HTMLInputElement).value.trim(),
+            "unit": (form.elements.namedItem('productUnit') as HTMLInputElement).value.trim(),
+            "defaultPrice": Number((form.elements.namedItem('defaultPrice') as HTMLInputElement).value),
+            "recommended": (form.elements.namedItem('recommended') as HTMLSelectElement).value === 'yes',
+            "active": (form.elements.namedItem('active') as HTMLSelectElement).value === 'yes',
+            "imageUrl": results.url
+        };
 
         const sendResults = await fetch(`${backendBase}/products`, {
             method: 'POST',
