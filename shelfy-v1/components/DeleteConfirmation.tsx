@@ -16,8 +16,6 @@ const DeleteConfirmation = ({ id }: Props) => {
     const pathName = usePathname();
     const sp = useSearchParams();
 
-    const handleClick = () => setOpenPopUp(false);
-
     const handleDelete = async () => {
         const response = await fetch(`${base}/products/${id}`, {
             method: 'DELETE',
