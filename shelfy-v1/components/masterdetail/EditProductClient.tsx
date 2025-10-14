@@ -84,7 +84,9 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
                 body: JSON.stringify(productToSend),
             });
 
-            if (!res.ok) throw new Error((await res.text().catch(() => "")) || "Failed to save product");
+            if (!res.ok) {
+                throw new Error(`Failed to update product: ${res.status} ${res.statusText}`);
+            };
             const updated: Product = await res.json();
             // Call the onSavedAction callback with the updated product data to notify the parent component
             onSavedAction(updated);
