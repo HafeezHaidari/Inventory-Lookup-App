@@ -10,7 +10,7 @@ import React from "react";
 // Fetch recommended products for the landing page
 const getLandingPageProducts = async () => {
     // Revalidate every second
-    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true`, {
+    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true&sort=name%2Casc`, {
         next: { revalidate: 1 }
     });
     const data = await response.json();
@@ -36,7 +36,7 @@ const LandingProductsPresenter: React.FC = async () => {
                     {products.map((product: Product) => (
                         <li key={product.id}>
                             {/* Link points to the search path with the recommended items as results */}
-                            <Link href={{ pathname: '/search', query: { tab: 'recommended', selected: product.id, pin: '1' } }} prefetch>
+                            <Link href={{ pathname: '/search', query: { tab: 'recommended', sort: 'name,asc', selected: product.id, pin: '1' } }} prefetch>
                                 <ProductCard product={product} />
                             </Link>
                         </li>
