@@ -9,13 +9,18 @@ interface Props {
 
 const base = process.env.NEXT_PUBLIC_API_BASE;
 
+// Component for confirming the deletion of a product
 const DeleteConfirmation = ({ id }: Props) => {
+
+    // State to manage the visibility of the confirmation popup
     const [openPopUp, setOpenPopUp] = useState(false);
 
+    // Hooks to manage routing and search parameters
     const router = useRouter();
     const pathName = usePathname();
     const sp = useSearchParams();
 
+    // Function to handle the deletion of the product
     const handleDelete = async () => {
         const response = await fetch(`${base}/products/${id}`, {
             method: 'DELETE',
@@ -24,6 +29,8 @@ const DeleteConfirmation = ({ id }: Props) => {
                 'Content-Type': 'application/json',
             }
         })
+        // Close the popup after attempting to delete. If deletion fails, log an error.
+        // If successful, update the URL to remove the selected product and refresh the page.
         if (!response.ok) {
             console.error('Failed to delete the product');
         } else {

@@ -7,26 +7,30 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const SearchBar = () => {
 
+    // Get initial query from URL
     const searchParams = useSearchParams();
     const initialQuery = searchParams.get('query') ?? '';
 
-    // Keep track of current input
+    // useState to keep track of current search input: Initially empty string or from URL
     const [query, setQuery] = useState(initialQuery);
 
-    // Generate suggestions
+    // useState to keep track of generated suggestions: array of strings
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
-    // Display generated suggestions
+    // useState to display generated suggestions or not: Initially false
     const [showSuggestions, setShowSuggestions] = useState(false);
 
-    // Reset state variable for suggestion display
+    // Reset state variable for suggestion display: Initially false
     const [isManualSelect, setIsManualSelect] = useState(false)
 
-    // Keep track of highlighted search suggestion in popup
+    // useState to keep track of highlighted search suggestion in popup
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
+    // Router and path hooks from Next.js to handle navigation and path changes
     const router = useRouter();
     const pathName = usePathname();
+
+    // Ref for the input element to manage focus and blur
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
@@ -50,9 +54,10 @@ const SearchBar = () => {
             }
 
             try {
-                // fetch from Datamuse API using their /sug endpoint and pass the query state variable
+                // Fetch from Datamuse API using their /sug endpoint and pass the query state variable
                 const response = await fetch(
-                    `https://api.datamuse.com/sug?s=${query}`, { signal: controller.signal } // We use controller.signal as a signal option in our fetch
+                    // We use controller.signal as a signal option in our fetch
+                    `https://api.datamuse.com/sug?s=${query}`, { signal: controller.signal }
                 );
 
                 // Receive data
@@ -66,28 +71,30 @@ const SearchBar = () => {
 
                 // set highlighted suggestion to "none"
                 setHighlightedIndex(-1);
-
+            // If fetch failed (not ok), log error to console
             } catch (err: any) {
                 if (err.name !== 'AbortError') {
                     console.error('Fetch Error: ', err)
                 }
             }
         };
-
+        // Delay (debounce) fetchSuggestions by 100ms
         const debounceTimer = setTimeout(fetchSuggestions, 100);
 
+        // Cleanup function to clear timeout and abort fetch on component unmount or before next effect run
         return () => {
             clearTimeout(debounceTimer);
             controller.abort();
         };
+    }, [query]);// Effect runs whenever query state variable changes
 
-    }, [query]);
 
-
+    // On change of input field, update query state variable
     const handleChange = (e: any) => {
         setQuery(e.target.value)
     }
 
+    // When a suggestion is selected, update query state variable, hide suggestions, and reset highlighted index
     const handleSelect = (value: string) => {
         setIsManualSelect(true);
         setQuery(value);
@@ -103,6 +110,7 @@ const SearchBar = () => {
 
     }, [pathName, searchParams]);
 
+    // On sumbission of the form (enter key or search button), navigate to /search with query as a search param
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // stop the default refresh
         if (!query.trim()) return; // do nothing if empty
@@ -116,9 +124,13 @@ const SearchBar = () => {
         router.push(`/search?query=${encodeURIComponent(query)}`);
     };
 
+    // Ref for the wrapper div to detect clicks outside of it
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
+    // Effect to handle clicks outside the component to close suggestions
     useEffect(() => {
+        // Function to handle pointer down events on the document
+        // If the click is outside the wrapperRef element, hide suggestions
         const onDocPointerDown = (e: PointerEvent) => {
             const el = wrapperRef.current as HTMLElement;
             if (!el) return;
@@ -126,6 +138,7 @@ const SearchBar = () => {
             setShowSuggestions(false);
             setHighlightedIndex(-1);
         }
+        // Add event listener on mount and clean up on unmount
         document.addEventListener('pointerdown', onDocPointerDown, true);
         return () => document.removeEventListener('pointerdown', onDocPointerDown, true);
     }, [])
@@ -133,6 +146,7 @@ const SearchBar = () => {
     return (
         <div className="relative flex justify-center gap-3">
             <form onSubmit={handleSubmit} className="relative w-[800px]" >
+                {/* Wrap input and suggestions in a div with ref to detect outside clicks */}
                 <div ref={wrapperRef}>
                     <Search
                         className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -146,6 +160,7 @@ const SearchBar = () => {
                             className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-600"
                             onChange={handleChange}
                             onKeyDown={(e) => {
+                                // Handle keyboard navigation for suggestions
                                 if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && suggestions.length > 0) {
                                     e.preventDefault();
                                     if (!showSuggestions) {
@@ -191,6 +206,7 @@ const SearchBar = () => {
                             aria-activedescendant={highlightedIndex >= 0 ? "suggestion-" + highlightedIndex : undefined}
                         />
 
+                        {/* Suggestion dropdown, conditionally rendered based on showSuggestions state */}
                         {showSuggestions && (
                             <div className="absolute left-0 right-0 bg-white border rounded-md mt-1 shadow-md z-50">
                                 <ul id="suggestions" role="listbox" className="max-h-40 overflow-y-auto">

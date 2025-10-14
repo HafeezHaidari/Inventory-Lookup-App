@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Inventory Search",
-  description: "Online tool to search an inventory",
+  description: "Online tool to search and modify an inventory",
 };
 
 export default async function RootLayout({
@@ -29,17 +29,22 @@ export default async function RootLayout({
 }>) {
 
   return (
+      // Main page layout consisting of a header with logo, search bar, and auth section
+      // and a main content area for displaying child components
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col`}
       >
+      {/* Contents are wrapped in the SessionProvider context to provide children with the authentication state */}
       <SessionProvider  initialSession={{isAuthenticated: false, user: null}}>
           <header className="shrink-0">
               <div className="flex items-center justify-between gap-4 px-4 py-2 ">
                   <div className="mb-16">
+                      {/* Section that displays Login/Logout and other auth-dependent content */}
                       <AuthSection />
                   </div>
                   <div className="flex flex-col items-center gap-1 justify-center items w-full">
+                      {/* App logo linking to home and the search bar */}
                       <Link href={"/"}>
                           <AppLogo />
                       </Link>

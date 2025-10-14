@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from "next/link";
 
+
+// Component for a button that navigates to the create page
 const CreateButton = () => {
 
     return (

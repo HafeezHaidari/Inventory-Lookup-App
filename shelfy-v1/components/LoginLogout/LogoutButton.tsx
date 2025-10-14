@@ -4,6 +4,7 @@ interface LoginButtonProps {
     onClick: () => void;
 }
 
+// Component for a login button that triggers the provided onClick function when clicked
 const LoginButton = ({ onClick }: LoginButtonProps) => {
 
     return (

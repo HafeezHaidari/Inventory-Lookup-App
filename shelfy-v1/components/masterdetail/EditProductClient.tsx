@@ -6,13 +6,17 @@ import { Product } from "@/types/Product";
 
 const base = process.env.NEXT_PUBLIC_API_BASE;
 
+// Props for the EditProductClient component, including the product to edit and action callbacks
 type Props = {
     product: Product;
     onCancelAction: () => void;
     onSavedAction: (updated: Product) => void;
 };
 
+// Component to edit product details in a form
 export default function EditProductClient({ product, onCancelAction, onSavedAction }: Props) {
+
+    // State to manage form data, saving state, and error messages. Initial form state is populated from the product prop.
     const [form, setForm] = useState<Product>(() => ({
         ...product,
         name: product.name ?? "",
@@ -23,28 +27,40 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
         active: !!product.active,
         recommended: !!product.recommended,
     }));
+
+    // useState hooks for managing saving state and error messages
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Handler for form input changes, updating the corresponding field in the form state
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
+        // Destructure name, value, type, and checked from the event target
         const { name, value, type, checked } = e.target as HTMLInputElement;
+
+        // Update the form state based on the input type and name
         if (name === "defaultPrice") {
+            // setForm with number conversion and fallback to 0
             setForm((f) => ({ ...f, defaultPrice: Number(value) || 0 }));
         } else if (name === "active") {
+            // Checkbox handling for boolean fields
             setForm((f) => ({ ...f, active: type === "checkbox" ? checked : value === "true" }));
         } else if (name === "recommended") {
+            // Checkbox handling for boolean fields
             setForm((f) => ({ ...f, recommended: type === "checkbox" ? checked : value === "true" }));
         } else {
+            // General case for text inputs
             setForm((f) => ({ ...f, [name]: value }));
         }
     };
 
+    // Handler for form submission, sending updated product data to the API
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
         setError(null);
+        // Validate required fields. If validation fails, set an error message and return early.
         try {
             const id = product.id ?? form.id;
             if (id == null) {
@@ -70,6 +86,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
 
             if (!res.ok) throw new Error((await res.text().catch(() => "")) || "Failed to save product");
             const updated: Product = await res.json();
+            // Call the onSavedAction callback with the updated product data to notify the parent component
             onSavedAction(updated);
         } catch (err: any) {
             setError(err.message ?? "Unknown error");
@@ -78,6 +95,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
         }
     };
 
+    // Handler for cancel action, resetting form state and calling the onCancelAction callback
     const handleCancel = () => {
         setForm({
             ...product,
@@ -95,6 +113,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
 
     return (
         <section className="flex flex-col overflow-y-auto bg-gray-50 p-6 lg:p-8">
+            {/* Header with product name and brand fields */}
             <div className="mb-6 flex flex-row gap-4">
                 <div className="flex w-full max-w-3xl flex-col">
                     <input
@@ -117,8 +136,8 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
             </div>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                {/* Image column */}
                 <div className="lg:col-span-1">
+                    {/* Product image preview */}
                     <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-md">
                         <div className="relative aspect-square">
                             <Image
@@ -226,7 +245,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
                         </div>
                     </div>
 
-                    {/* Action bar */}
+                    {/* Action buttons */}
                     <div className="flex flex-wrap items-center justify-end gap-3">
                         <button
                             type="button"

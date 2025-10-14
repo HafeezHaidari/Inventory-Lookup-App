@@ -2,11 +2,13 @@ import React from 'react'
 import Image from "next/image";
 import {Product} from "@/types/Product";
 
+// Props for the ProductCard component
 interface ProductCardProps {
     product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    // Render the product card with image, name, brand, unit, and price; Purely presentational component
     return (
 
         <div className="max-w-xs bg-white rounded-2xl shadow-md p-4 hover:shadow-lg hover:scale-105 transition-transform duration-300 text-center">

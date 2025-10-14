@@ -4,35 +4,39 @@ import React, {useEffect, useState} from "react";
 import EditProductClient from "@/components/masterdetail/EditProductClient";
 import { useSession } from "@/app/lib/SessionProvider";
 import { Product } from "@/types/Product";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import DeleteConfirmation from "@/components/DeleteConfirmation";
 
+// Props for the ProductDetailPane component, including an optional selected product ID
 type Props = { selected?: number };
 
 const base = process.env.NEXT_PUBLIC_API_BASE;
 
+// Component to display detailed information about a selected product
 export default function ProductDetailPane({ selected }: Props) {
 
+    // State to manage authentication status, product data, loading state, error messages, and edit mode
     const {isAuthenticated} = useSession();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false)
 
+    // Effect to fetch product details when a new product is selected
     useEffect(() => {
         if (selected == null) return;
         setLoading(true);
         setIsEditing(false);
+        // Fetch product details from the API based on the selected product ID
         fetch(`${base}/products/${selected}`, { cache: 'no-store' }).then(res => {
             if (!res.ok) throw new Error("Failed to fetch product");
-            console.log(res);
             return res.json();
             })
+            // Update state with fetched product data or error message
             .then(setProduct)
             .catch(err => setError(err.message))
             .finally(() => setLoading(false)
-        )
-        console.log(product);
+        );
     }, [selected]);
 
     if (selected == null) {
@@ -49,11 +53,13 @@ export default function ProductDetailPane({ selected }: Props) {
 
     if (!product) return null;
 
+    // Render the edit form if in editing mode
     if (isEditing && product) {
         return (
             <EditProductClient
                 product={product}
                 onCancelAction={() => setIsEditing(false)}
+                // Update product state and exit edit mode on save
                 onSavedAction={(updated) => {
                     setProduct(prev => prev ? { ...prev, ...updated, id: prev.id } : updated);
                     setIsEditing(false);
@@ -63,6 +69,7 @@ export default function ProductDetailPane({ selected }: Props) {
     }
 
     return (
+        // Detailed view of the selected product with options to edit or delete if authenticated
         <section className="flex flex-col overflow-y-auto bg-gray-50 p-6 lg:p-8">
             <div className="mb-6 flex flex-row gap-4">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">{product.name}</h1>

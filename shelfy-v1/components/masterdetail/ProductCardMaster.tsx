@@ -3,10 +3,11 @@ import React from 'react';
 import {Product} from "@/types/Product";
 import Image from "next/image";
 
+// Props for the ProductCardMaster component, including the product to display
 interface ProductCardMasterProps {
     product: Product;
 }
-
+// Component to display a product card in the master list, purely for display purposes
 const ProductCardMaster: React.FC<ProductCardMasterProps> = ({ product }) => {
     return (
         <div className="w-[350px] max-w-2xl bg-white shadow-xs p-4

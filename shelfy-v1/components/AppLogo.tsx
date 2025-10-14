@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+// Component to display the application logo and title
 const AppLogo = () => {
     return (
         <div className='flex justify-center items-center gap-4'>

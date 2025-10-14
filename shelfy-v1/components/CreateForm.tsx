@@ -6,16 +6,20 @@ const backendBase = process.env.NEXT_PUBLIC_API_BASE;
 const cloudinaryApiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY
 const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
+// Component for creating a new product with a form, including image upload functionality
 const CreateForm = () => {
 
+    // State to manage the preview URL of the uploaded image
     const [previewUrl, setPreviewUrl] = useState<string | undefined>()
 
+    // Cleanup the preview URL when the component unmounts or when a new file is selected
     useEffect(() => {
         return () => {
             if (previewUrl) URL.revokeObjectURL(previewUrl);
         };
     }, [previewUrl]);
 
+    // Callback function to handle file drop events. It sets the file and generates a preview URL
     const onDrop = useCallback((accepted: File[]) => {
         const f = accepted[0];
         if (!f) return;
@@ -23,16 +27,20 @@ const CreateForm = () => {
         setPreviewUrl(URL.createObjectURL(f));
     }, []);
 
+    // Set up the dropzone for file uploads using react-dropzone
     const { acceptedFiles, getRootProps, getInputProps, isDragActive } = useDropzone({
+        // Configure dropzone to accept only one image file
         onDrop,
         multiple: false,
         accept: { 'image/*': [] },
         maxFiles: 1
     });
 
+    // State to manage the form submission state and the selected file
     const [state, setState] = useState('ready');
     const [file, setFile] = useState<File | undefined>();
 
+    // Handle form submission, including image upload to Cloudinary and product creation in the backend
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
 
@@ -71,13 +79,7 @@ const CreateForm = () => {
         }).then(res => {setState('sent')})
     }
 
-    const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
 
-        const target = e.target as HTMLInputElement & {
-            files: FileList;
-        }
-        setFile(target.files[0]);
-    }
 
     return (
         <>
@@ -253,7 +255,12 @@ const CreateForm = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex justify-end pt-2">
+                        <div className="flex flex-row justify-between pt-2">
+                            {state === "sent" && (
+                                <p className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
+                                    Product Created!
+                                </p>
+                            )}
                             <button
                                 type="submit"
                                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition-colors"
@@ -262,11 +269,6 @@ const CreateForm = () => {
                             </button>
                         </div>
                     </form>
-                    {state === "sent" && (
-                        <p className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
-                            Product Created!
-                        </p>
-                    )}
                 </div>
             </div>
         </>

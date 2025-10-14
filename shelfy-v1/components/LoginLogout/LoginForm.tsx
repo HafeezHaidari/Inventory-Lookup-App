@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import PopupModal from "@/components/LoginLogout/PopupModal";
 import LoginButton from "@/components/LoginLogout/LoginButton";
 
+// Component for a login form that appears in a popup modal
 export const LoginForm = () => {
 
+    // State to manage the visibility of the popup, submission status, and error messages
     const [openPopup, setOpenPopup] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -15,8 +17,10 @@ export const LoginForm = () => {
 
     return (
         <>
+            {/* Button to open the login popup */}
             <LoginButton onClick={() => setOpenPopup(true)}/>
 
+            {/* Popup modal containing the login form */}
             <PopupModal isOpen={openPopup} handleClose={() => setOpenPopup(false)}>
                 <div>
                     <h2>Welcome</h2>
@@ -27,6 +31,7 @@ export const LoginForm = () => {
                             setError(null);
                             setSubmitting(true)
                             try {
+                                // Create FormData from the form and attempt to log in
                                 const formData = new FormData(e.currentTarget);
                                 await loginWithFormData(formData);
                                 setOpenPopup(false);

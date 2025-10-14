@@ -5,21 +5,27 @@ import { useSearchParams } from 'next/navigation';
 import { Product } from "@/types/Product";
 import ProductCardMaster from "@/components/masterdetail/ProductCardMaster";
 
+// Props for the ProductMasterList component
 type Props = { products: Product[]; selectedId?: number; extraQuery?: Record<string, string | string[] | undefined>; };
 
+// Master list component displaying a list of products with links to their details
 export default function ProductMasterList({ products, selectedId, extraQuery }: Props) {
+
+    // Get current search parameters to maintain query state
     const sp = useSearchParams();
-    const tab = sp.get('tab') ?? undefined;
     const query = sp.get('query') ?? undefined;
 
     return (
         <div className="h-full overflow-y-auto px-1 pt-2">
-            <ul className="space-y-2"> {/* single column */}
+            <ul className="space-y-2">
+
+                {/* Render each product as a list item with a link to its detail view */}
                 {products.length > 0 ? products.map((it) => {
+                    // Determine if the current product is the selected one
                     const isActive = selectedId != null && Number(it.id) === selectedId;
-                    // Merge current filters into the link
+                    // Construct query parameters for the link, preserving any extra query parameters
                     const query: Record<string, any> = { ...(extraQuery || {}), selected: it.id };
-                    // remove undefined entries
+                    // Preserve the search query if it exists
                     Object.keys(query).forEach(k => (query as any)[k] == null && delete (query as any)[k]);
                     return (
                         <li key={it.id}>
@@ -35,7 +41,7 @@ export default function ProductMasterList({ products, selectedId, extraQuery }: 
                             </Link>
                         </li>
                     );
-                }) : <li className="p-4 text-gray-500">No products found{query ? ` for "${query}"` : ""}.</li>}
+                }) : <li className="p-4 text-gray-500">No products found{query ? ` for "${query}"` : "."}</li>}
             </ul>
         </div>
     );
