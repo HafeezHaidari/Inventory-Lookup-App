@@ -38,17 +38,20 @@ export default async function RootLayout({
       {/* Contents are wrapped in the SessionProvider context to provide children with the authentication state */}
       <SessionProvider  initialSession={{isAuthenticated: false, user: null}}>
           <header className="shrink-0">
-              <div className="flex items-center justify-between gap-4 px-4 py-2 ">
-                  <div className="mb-16">
-                      {/* Section that displays Login/Logout and other auth-dependent content */}
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-2 ">
+                  <div className="mb-16 flex justify-start">
+                      {/* First AuthSection for login/logout functionality */}
                       <AuthSection />
                   </div>
-                  <div className="flex flex-col items-center gap-1 justify-center items w-full">
-                      {/* App logo linking to home and the search bar */}
+                  <div className="flex flex-col items-center gap-1 w-full col-start-2 col-end-3">
                       <Link href={"/"}>
                           <AppLogo />
                       </Link>
                       <SearchBar />
+                  </div>
+                  {/* Second AuthSection keep the page symmetrical */}
+                  <div className="mb-16 flex justify-end invisible">
+                      <AuthSection />
                   </div>
               </div>
           </header>
