@@ -68,12 +68,13 @@ export default function FilterBar({ tab, query }: Props) {
     const brandsSelected = sp.getAll("brand");
     const priceMin = sp.get("priceMin") ?? "";
     const priceMax = sp.get("priceMax") ?? "";
-    const sort = sp.get("sort") ?? "";
+    // Default sort: name-asc if not set
+    const sort = sp.get("sort") ?? "name-asc";
 
     return (
         <form
             onSubmit={(e) => e.preventDefault()}
-            className="flex flex-wrap items-center gap-4 justify-center w-full max-w-4xl mx-auto" // changed from space-y-3
+            className="flex flex-wrap items-center gap-4 justify-center w-full max-w-4xl mx-auto"
         >
             {/* Brand filters */}
             <fieldset className="flex items-center gap-2">
@@ -111,11 +112,11 @@ export default function FilterBar({ tab, query }: Props) {
 
             {/* Sort */}
             <select
-                value={sp.get("sort") ?? ""}
+                value={sort}
                 onChange={(e) => setParam("sort", e.target.value || undefined)}
                 className="border rounded px-2 py-1 text-sm"
             >
-                <option value="">Sort: default</option>
+
                 {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
 
