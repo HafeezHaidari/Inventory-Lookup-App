@@ -42,7 +42,7 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
     const url = qs ? `${base}?${qs}` : base;
 
     // Fetch products from the API with revalidation every second
-    const res = await fetch(url, { next: { revalidate: 0 } });
+    const res = await fetch(url, { next: { revalidate: 1 } });
     if (!res.ok) throw new Error("Fetch failed");
     const data = await res.json();
 
