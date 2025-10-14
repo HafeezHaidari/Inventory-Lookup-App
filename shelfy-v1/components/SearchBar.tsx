@@ -120,8 +120,8 @@ const SearchBar = () => {
         setHighlightedIndex(-1);
         inputRef.current?.blur();
 
-        // Navigate to a new URL with query param
-        router.push(`/search?query=${encodeURIComponent(query)}`);
+        // Navigate to a new URL with query param and a default sort
+        router.push(`/search?query=${encodeURIComponent(query)}&sort=name%2Casc`);
     };
 
     // Ref for the wrapper div to detect clicks outside of it

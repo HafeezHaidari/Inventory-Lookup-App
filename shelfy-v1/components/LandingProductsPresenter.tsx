@@ -10,7 +10,7 @@ import React from "react";
 // Fetch recommended products for the landing page
 const getLandingPageProducts = async () => {
     // Revalidate every second
-    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true&sort=name%2Casc`, {
+    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true`, {
         next: { revalidate: 1 }
     });
     const data = await response.json();
