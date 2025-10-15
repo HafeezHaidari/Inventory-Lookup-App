@@ -255,18 +255,18 @@ const CreateForm = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex flex-row justify-between pt-2">
-                            {state === "sent" && (
-                                <p className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
-                                    Product Created!
-                                </p>
-                            )}
+                        <div className="grid grid-cols-2 items-center gap-4">
                             <button
                                 type="submit"
                                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition-colors"
                             >
                                 Create product
                             </button>
+                            {state === "sent" && (
+                                <p className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
+                                    Product Created!
+                                </p>
+                            )}
                         </div>
                     </form>
                 </div>
