@@ -53,11 +53,14 @@ const SearchBar = () => {
                 return;
             }
 
+            // If fetch takes longer than 2 seconds, abort it
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
             try {
                 // Fetch from Datamuse API using their /sug endpoint and pass the query state variable
                 const response = await fetch(
-                    // We use controller.signal as a signal option in our fetch
-                    `https://api.datamuse.com/sug?s=${query}`, { signal: controller.signal }
+                    // We use controller.signal as a signal option in our fetch to be able to abort it later
+                    `https://api.datamuse.com/sug?s=${encodeURIComponent(query)}`, { signal: controller.signal }
                 );
 
                 // Receive data
@@ -76,6 +79,9 @@ const SearchBar = () => {
                 if (err.name !== 'AbortError') {
                     console.error('Fetch Error: ', err)
                 }
+            } finally {
+                // Clear the timeout if fetch completes in time
+                clearTimeout(timeoutId);
             }
         };
         // Delay (debounce) fetchSuggestions by 100ms
@@ -86,7 +92,7 @@ const SearchBar = () => {
             clearTimeout(debounceTimer);
             controller.abort();
         };
-    }, [query]);// Effect runs whenever query state variable changes
+    }, [query, isManualSelect]);// Effect runs whenever query state variable changes
 
 
     // On change of input field, update query state variable
