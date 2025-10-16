@@ -118,7 +118,7 @@ const CreateForm = () => {
                                 id="productBrand"
                                 name="productBrand"
                                 required
-                                className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                             />
                         </div>
 
