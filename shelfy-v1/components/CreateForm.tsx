@@ -84,18 +84,18 @@ const CreateForm = () => {
     return (
         <>
             {/* Header */}
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 text-center">
                 Create New Product
             </h2>
 
             {/* Card */}
-            <div className="max-w-xl mx-auto bg-white dark:bg-neutral-900 rounded-lg shadow-xl overflow-hidden">
+            <div className="max-w-xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
                 <div className="p-6 sm:p-8">
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label
                                 htmlFor="productName"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                className="block text-sm font-medium text-gray-700 mb-1"
                             >
                                 Product Name
                             </label>
@@ -103,14 +103,14 @@ const CreateForm = () => {
                                 id="productName"
                                 name="productName"
                                 required
-                                className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                             />
                         </div>
 
                         <div>
                             <label
                                 htmlFor="productBrand"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                className="block text-sm font-medium text-gray-700 mb-1"
                             >
                                 Brand
                             </label>
@@ -118,14 +118,14 @@ const CreateForm = () => {
                                 id="productBrand"
                                 name="productBrand"
                                 required
-                                className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
                             />
                         </div>
 
                         <div>
                             <label
                                 htmlFor="productUnit"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                className="block text-sm font-medium text-gray-700 mb-1"
                             >
                                 Unit
                             </label>
@@ -134,20 +134,20 @@ const CreateForm = () => {
                                 name="productUnit"
                                 required
                                 placeholder="e.g. kg, L, pcs"
-                                className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                             />
                         </div>
 
                         <div>
                             <label
                                 htmlFor="defaultPrice"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                className="block text-sm font-medium text-gray-700 mb-1"
                             >
                                 Default Price
                             </label>
                             <div className="relative">
                                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span className="text-gray-500 dark:text-gray-400 sm:text-sm">€</span>
+                                    <span className="text-gray-500 sm:text-sm">€</span>
                                 </div>
                                 <input
                                     id="defaultPrice"
@@ -156,7 +156,7 @@ const CreateForm = () => {
                                     type="number"
                                     step="0.01"
                                     placeholder="0.00"
-                                    className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 pl-7 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                    className="block w-full rounded-lg border-gray-300 bg-gray-50 dark:bg-neutral-800 pl-7 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                                 />
                             </div>
                         </div>
@@ -165,14 +165,14 @@ const CreateForm = () => {
                             <div>
                                 <label
                                     htmlFor="recommended"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-gray-700 mb-1"
                                 >
                                     Mark as recommended?
                                 </label>
                                 <select
                                     id="recommended"
                                     name="recommended"
-                                    className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                    className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                                     defaultValue="yes"
                                 >
                                     <option value="yes">Yes</option>
@@ -182,14 +182,14 @@ const CreateForm = () => {
                             <div>
                                 <label
                                     htmlFor="active"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-gray-700 mb-1"
                                 >
                                     Mark as active?
                                 </label>
                                 <select
                                     id="active"
                                     name="active"
-                                    className="block w-full rounded-lg border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white focus:ring-blue-600 focus:border-blue-600"
+                                    className="block w-full rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-blue-600 focus:border-blue-600"
                                     defaultValue="yes"
                                 >
                                     <option value="yes">Yes</option>
@@ -199,14 +199,14 @@ const CreateForm = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Item Image
                             </label>
 
                             <div
                                 {...getRootProps()}
                                 className={`relative mt-1 flex justify-center items-center px-6 pt-8 pb-8 border-2 border-dashed rounded-lg transition
-            ${isDragActive ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-300 dark:border-neutral-700 bg-gray-50/50 dark:bg-neutral-800/70'}`}
+            ${isDragActive ? 'border-blue-500 bg-blue-50/30' : 'border-gray-300 bg-gray-50/50 hover:bg-gray-100'}`}
                                 style={{ minHeight: 180 }}
                             >
                                 <input
@@ -242,13 +242,13 @@ const CreateForm = () => {
                                                 d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28"
                                             />
                                         </svg>
-                                        <div className="mt-3 flex text-sm text-gray-600 dark:text-gray-400 justify-center">
+                                        <div className="mt-3 flex text-sm text-gray-600 justify-center">
                 <span className="relative rounded-md font-medium text-blue-600">
                   Click to upload
                 </span>
                                             <span className="pl-1">or drag & drop</span>
                                         </div>
-                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        <p className="mt-1 text-xs text-gray-500">
                                             PNG, JPG, GIF up to 10MB
                                         </p>
                                     </div>
@@ -263,7 +263,7 @@ const CreateForm = () => {
                                 Create product
                             </button>
                             {state === "sent" && (
-                                <p className="text-center mt-4 text-green-600 dark:text-green-400 font-medium">
+                                <p className="text-center mt-4 text-green-600 font-medium">
                                     Product Created!
                                 </p>
                             )}
