@@ -1,6 +1,7 @@
 import ProductMasterList from "@/components/masterdetail/ProductMasterList";
 import ProductDetailPane from "@/components/masterdetail/ProductDetailPane";
 import { Filters } from "@/types/Filters";
+import {Suspense} from "react";
 
 
 // Parse filters from search params.
@@ -97,25 +98,29 @@ export default async function Page({
         <div className="h-full flex min-h-0">
             <aside className="h-full min-h-0 border-r flex flex-col overflow-x-auto min-w-[350px] max-w-full" style={{ width: 370 }}>
                 <div className="flex-1 min-h-0">
-                    {/* Master list of products with the ability to highlight the selected product */}
-                    <ProductMasterList
-                        products={products}
-                        selectedId={selectedId}
-                        extraQuery={{
-                            tab,
-                            query,
-                            priceMin,
-                            priceMax,
-                            sort,
-                            ...(filters.brand ? { brand: filters.brand } : {}),
-                        }}
-                    />
+                    <Suspense fallback={null}>
+                        {/* Master list of products with the ability to highlight the selected product */}
+                        <ProductMasterList
+                            products={products}
+                            selectedId={selectedId}
+                            extraQuery={{
+                                tab,
+                                query,
+                                priceMin,
+                                priceMax,
+                                sort,
+                                ...(filters.brand ? { brand: filters.brand } : {}),
+                            }}
+                        />
+                    </Suspense>
                 </div>
             </aside>
 
             <section className="flex-1 h-full min-h-0 overflow-y-auto">
-                {/* Detail pane showing details of the selected product */}
-                <ProductDetailPane selected={selectedId} />
+                <Suspense fallback={null}>
+                    {/* Detail pane showing details of the selected product */}
+                    <ProductDetailPane selected={selectedId} />
+                </Suspense>
             </section>
 
             {/* Bug in which the selected item does not get moved to the top of the list, currently commented out */}
