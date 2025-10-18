@@ -3,8 +3,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const backendBase = process.env.NEXT_PUBLIC_API_BASE;
-const cloudinaryApiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY
 const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
 // Component for creating a new product with a form, including image upload functionality
 const CreateForm = () => {
@@ -50,9 +50,8 @@ const CreateForm = () => {
 
         const formData = new FormData();
         formData.append('file', file)
-        formData.append('upload_preset', 'inventory_app_preset');
-        // @ts-expect-error -- cloudinaryApiKey is defined in env
-        formData.append('api_key', cloudinaryApiKey);
+        // @ts-expect-error -- cloudinary expects upload_preset
+        formData.append('upload_preset', cloudinaryUploadPreset);
 
         setState('sending');
 
