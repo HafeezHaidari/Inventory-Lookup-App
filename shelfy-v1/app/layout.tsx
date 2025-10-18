@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import Link from "next/link";
 import AuthSection from "@/components/LoginLogout/AuthSection";
 import SessionProvider from "@/app/lib/SessionProvider";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,10 @@ export default async function RootLayout({
                       <Link href={"/"}>
                           <AppLogo />
                       </Link>
-                      <SearchBar />
+                      {/* Wrap SearchBar (client, uses useSearchParams) in Suspense to avoid CSR bailout */}
+                      <Suspense fallback={<div className="h-10" aria-hidden /> }>
+                        <SearchBar />
+                      </Suspense>
                   </div>
                   {/* Second AuthSection keep the page symmetrical */}
                   <div className="mb-16 flex justify-end invisible">
