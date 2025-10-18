@@ -28,7 +28,7 @@ const CreateForm = () => {
     }, []);
 
     // Set up the dropzone for file uploads using react-dropzone
-    const { acceptedFiles, getRootProps, getInputProps, isDragActive } = useDropzone({
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
         // Configure dropzone to accept only one image file
         onDrop,
         multiple: false,
@@ -51,7 +51,7 @@ const CreateForm = () => {
         const formData = new FormData();
         formData.append('file', file)
         formData.append('upload_preset', 'inventory_app_preset');
-        // @ts-ignore
+        // @ts-expect-error -- cloudinaryApiKey is defined in env
         formData.append('api_key', cloudinaryApiKey);
 
         setState('sending');
@@ -71,12 +71,12 @@ const CreateForm = () => {
             "imageUrl": results.url
         };
 
-        const sendResults = await fetch(`${backendBase}/products`, {
+        await fetch(`${backendBase}/products`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify([product])
-        }).then(res => {setState('sent')})
+        }).then(_res => {setState('sent')})
     }
 
 
