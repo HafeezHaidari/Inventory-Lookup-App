@@ -1,3 +1,5 @@
+'use client';
+
 import React, {useState} from 'react'
 import DeleteButton from "@/components/DeleteButton";
 import PopupModal from "@/components/LoginLogout/PopupModal";
