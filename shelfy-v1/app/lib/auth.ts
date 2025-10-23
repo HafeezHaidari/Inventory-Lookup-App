@@ -1,4 +1,6 @@
-const base = process.env.NEXT_PUBLIC_API_BASE;
+import {getApiBase} from "@/app/lib/base";
+
+const base = getApiBase();
 
 // Function to log in with form data
 export const loginWithFormData = async (formData: FormData) => {

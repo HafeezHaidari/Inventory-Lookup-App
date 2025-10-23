@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useTransition } from "react";
 import {SORT_OPTIONS} from "@/types/SORT_OPTIONS";
+import {getApiBase} from "@/app/lib/base";
 
 // Props for the FilterBar component, including optional tab and query parameters
 type Props = {tab?: string, query?: string};
@@ -12,10 +13,11 @@ type Props = {tab?: string, query?: string};
 export default function FilterBar({ tab, query }: Props) {
     // State to manage the list of brands fetched from the API
     const [brands, setBrands] = useState<string[]>([]);
+    const base = getApiBase();
 
     // Fetch the list of brands from the API when the component mounts
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE}/products/brands`)
+        fetch(`${base}/products/brands`)
             .then(res => res.json())
             .then(data => setBrands(data))
             .catch(err => console.error("Failed to fetch brands", err));

@@ -3,8 +3,9 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Product } from "@/types/Product";
+import {getApiBase} from "@/app/lib/base";
 
-const base = process.env.NEXT_PUBLIC_API_BASE;
+const base = getApiBase();
 
 // Props for the EditProductClient component, including the product to edit and action callbacks
 type Props = {
@@ -86,7 +87,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
 
             if (!res.ok) {
                 throw new Error(`Failed to update product: ${res.status} ${res.statusText}`);
-            };
+            }
             const updated: Product = await res.json();
             // Call the onSavedAction callback with the updated product data to notify the parent component
             onSavedAction(updated);

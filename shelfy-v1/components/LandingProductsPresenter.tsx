@@ -6,11 +6,14 @@ import ProductCard from "@/components/ProductCard";
 import {Product} from "@/types/Product";
 import Link from "next/link";
 import React from "react";
+import {getApiBase} from "@/app/lib/base";
+
+const base = getApiBase();
 
 // Fetch recommended products for the landing page
 const getLandingPageProducts = async () => {
     // Revalidate every second
-    const response = await fetch(`${process.env.API_BASEURL}/products/search?recommended=true&sort=name,asc`, {
+    const response = await fetch(`${base}/products/search?recommended=true&sort=name,asc`, {
         next: { revalidate: 1 }
     });
     const data = await response.json();

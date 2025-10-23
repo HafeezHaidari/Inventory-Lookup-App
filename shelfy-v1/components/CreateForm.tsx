@@ -1,8 +1,9 @@
 'use client'
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
+import {getApiBase} from "@/app/lib/base";
 
-const backendBase = process.env.NEXT_PUBLIC_API_BASE;
+const backendBase = getApiBase();
 const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 

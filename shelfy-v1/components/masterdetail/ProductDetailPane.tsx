@@ -6,11 +6,12 @@ import { useSession } from "@/app/lib/SessionProvider";
 import { Product } from "@/types/Product";
 import { Pencil } from "lucide-react";
 import DeleteConfirmation from "@/components/DeleteConfirmation";
+import {getApiBase} from "@/app/lib/base";
 
 // Props for the ProductDetailPane component, including an optional selected product ID
 type Props = { selected?: number };
 
-const base = process.env.NEXT_PUBLIC_API_BASE;
+const base = getApiBase();
 
 // Component to display detailed information about a selected product
 export default function ProductDetailPane({ selected }: Props) {

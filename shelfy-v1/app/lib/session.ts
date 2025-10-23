@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
+import {getApiBase} from "@/app/lib/base";
 
-const base = process.env.NEXT_PUBLIC_API_BASE;
+const base = getApiBase();
 
 // Type definition for the session user
 export type SessionUser = {

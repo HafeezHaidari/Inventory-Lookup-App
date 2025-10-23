@@ -2,6 +2,7 @@ import ProductMasterList from "@/components/masterdetail/ProductMasterList";
 import ProductDetailPane from "@/components/masterdetail/ProductDetailPane";
 import { Filters } from "@/types/Filters";
 import {Suspense} from "react";
+import {getApiBase} from "@/app/lib/base";
 
 
 // Parse filters from search params.
@@ -38,9 +39,10 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
     if (filters?.brand?.length) for (const b of filters.brand) params.append("brand", b);
 
     // Construct the full URL with query parameters
-    const base = `${process.env.API_BASEURL}/products/search`;
+    const base = getApiBase();
+    const baseSearch = `${base}/products/search`;
     const qs = params.toString();
-    const url = qs ? `${base}?${qs}` : base;
+    const url = qs ? `${baseSearch}?${qs}` : base;
 
     // Fetch products from the API with revalidation every second
     const res = await fetch(url, { next: { revalidate: 1 } });
