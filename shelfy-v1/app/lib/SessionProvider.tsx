@@ -1,6 +1,7 @@
 // app/lib/SessionProvider.tsx
 'use client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getApiBase } from '@/app/lib/base';
 
 // Define the shape of the session state as an authentication status and user details
 type SessionState = { isAuthenticated: boolean; user: { username: string; roles: string[] } | null };
@@ -11,20 +12,29 @@ const SessionContext = createContext<SessionState>({ isAuthenticated: false, use
 export default function SessionProvider({ initialSession, children }: { initialSession: SessionState; children: React.ReactNode }) {
     // useState hook to manage the session state, initialized with the provided initialSession
     const [session, setSession] = useState(initialSession);
+    const base = getApiBase();
 
     // useEffect hook to check the session status when the component mounts and when the document visibility changes
     useEffect(() => {
         const check = async () => {
             try {
-
-                // Fetch the current session status from the server without caching
-                // api/session is a proxy endpoint to the backend session check
-                // If the response is OK, update the session state to authenticated with user details
-                // If not, set the session state to unauthenticated with no user
-                const res = await fetch('/api/session', { cache: 'no-store' });
-                if (res.ok) setSession({ isAuthenticated: true, user: (await res.json()).user });
-                else setSession({ isAuthenticated: false, user: null });
-            } catch {}
+                // Fetch the current session status from the API backend directly from the client
+                // Use credentials: 'include' so the browser will attach HttpOnly/Secure cookies for the API domain
+                const res = await fetch(`${base}/auth/me`, { cache: 'no-store', credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data.username === 'string' && Array.isArray(data.roles)) {
+                        setSession({ isAuthenticated: true, user: { username: data.username, roles: data.roles } });
+                    } else {
+                        setSession({ isAuthenticated: false, user: null });
+                    }
+                } else {
+                    setSession({ isAuthenticated: false, user: null });
+                }
+            } catch (err) {
+                // On error, treat as unauthenticated
+                setSession({ isAuthenticated: false, user: null });
+            }
         };
         // Initial session check on component mount
         check().then();
