@@ -71,7 +71,7 @@ const CreateForm = () => {
             "imageUrl": results.url
         };
 
-        await fetch(`${backendBase}/products`, {
+        await fetch('/api/proxy/products', {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

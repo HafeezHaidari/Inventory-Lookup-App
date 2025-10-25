@@ -78,7 +78,7 @@ export default function EditProductClient({ product, onCancelAction, onSavedActi
                 "recommended": form.recommended,
             };
 
-            const res = await fetch(`${base}/products/${id}`, {
+            const res = await fetch(`/api/proxy/products/${id}`, {
                 method: "PUT",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
