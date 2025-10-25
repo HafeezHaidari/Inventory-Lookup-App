@@ -1,4 +1,4 @@
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 const base = getApiBase();
 
@@ -10,11 +10,12 @@ export const loginWithFormData = async (formData: FormData) => {
     const password = String(formData.get("password") ?? "");
 
     // Send login request to the server
-    const response = await fetch(`${base}/auth/login`, {
+    const response = await fetch('/api/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ username, password }),
+        cache: "no-store"
     });
 
     // Handle response
@@ -30,7 +31,7 @@ export const loginWithFormData = async (formData: FormData) => {
 export const logout = async () => {
 
     // Send logout request to the server
-    await fetch(`${base}/auth/logout`, {
+    await fetch('/api/logout', {
         method: "POST",
         credentials: "include"
     });
