@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 export function getApiBase() {
     return (
         process.env.API_BASE ||
