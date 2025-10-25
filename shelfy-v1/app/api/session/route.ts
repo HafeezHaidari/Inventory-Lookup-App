@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
         cache: 'no-store',
     });
 
-    // 2) If 401 → ask Spring to refresh by cookie (no body)
+    // 2) If 401 → ask Spring to refresh by cookie (not body)
     if (me.status === 401) {
         const refresh = await fetch(`${base}/auth/refresh`, {
             method: 'POST',
