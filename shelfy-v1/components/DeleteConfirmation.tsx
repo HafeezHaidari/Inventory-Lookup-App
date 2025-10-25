@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import DeleteButton from "@/components/DeleteButton";
 import PopupModal from "@/components/LoginLogout/PopupModal";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 interface Props {
     id: number;

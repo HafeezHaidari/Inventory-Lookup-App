@@ -6,7 +6,7 @@ import { useSession } from "@/app/lib/SessionProvider";
 import { Product } from "@/types/Product";
 import { Pencil } from "lucide-react";
 import DeleteConfirmation from "@/components/DeleteConfirmation";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 // Props for the ProductDetailPane component, including an optional selected product ID
 type Props = { selected?: number };

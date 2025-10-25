@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Product } from "@/types/Product";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 const base = getApiBase();
 

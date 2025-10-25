@@ -6,7 +6,7 @@ import ProductCard from "@/components/ProductCard";
 import {Product} from "@/types/Product";
 import Link from "next/link";
 import React from "react";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 const base = getApiBase();
 

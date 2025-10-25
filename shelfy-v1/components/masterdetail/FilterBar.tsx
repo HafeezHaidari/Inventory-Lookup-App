@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useTransition } from "react";
 import {SORT_OPTIONS} from "@/types/SORT_OPTIONS";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 // Props for the FilterBar component, including optional tab and query parameters
 type Props = {tab?: string, query?: string};

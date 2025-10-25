@@ -2,7 +2,7 @@ import ProductMasterList from "@/components/masterdetail/ProductMasterList";
 import ProductDetailPane from "@/components/masterdetail/ProductDetailPane";
 import { Filters } from "@/types/Filters";
 import {Suspense} from "react";
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 
 // Parse filters from search params.

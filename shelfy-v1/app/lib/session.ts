@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import {getApiBase} from "@/app/lib/base";
+import {getApiBase} from "@/app/api/_utils/base";
 
 const base = getApiBase();
 
