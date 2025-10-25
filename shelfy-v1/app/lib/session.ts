@@ -19,7 +19,7 @@ export const getSession = async (): Promise<SessionUser | null> => {
     let response = await fetch(`${base}/auth/me`, {
         headers: {
             cookie: cookieHeader
-        }, cache: "no-cache"
+        }, cache: "no-cache", credentials: 'include'
     });
 
     // If the access token is expired, try to refresh it
@@ -29,7 +29,7 @@ export const getSession = async (): Promise<SessionUser | null> => {
             method: "POST",
             headers: {
                 cookie: cookieHeader
-            }, cache: "no-cache"
+            }, cache: "no-cache", credentials: 'include'
         });
 
         // If refresh also fails, return null
@@ -41,7 +41,7 @@ export const getSession = async (): Promise<SessionUser | null> => {
         response = await fetch(`${base}/auth/me`, {
             headers: {
                 cookie: cookieHeader
-            }, cache: "no-cache"
+            }, cache: "no-cache", credentials: 'include'
         });
     }
 
