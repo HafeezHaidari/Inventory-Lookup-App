@@ -3,6 +3,7 @@ import ProductDetailPane from "@/components/masterdetail/ProductDetailPane";
 import { Filters } from "@/types/Filters";
 import {Suspense} from "react";
 import {getApiBase} from "@/app/api/_utils/base";
+import {notFound} from "next/navigation";
 
 
 // Parse filters from search params.
@@ -72,6 +73,14 @@ export default async function Page({
 }) {
     // Await the search parameters
     const sp = await searchParams;
+
+    const hasAnyParam =
+        Boolean(sp.tab || sp.query || sp.selected || sp.pin || sp.priceMin || sp.priceMax || sp.sort) ||
+        (Array.isArray(sp.brand) ? sp.brand.length > 0 : Boolean(sp.brand));
+
+    if (!hasAnyParam) {
+        notFound(); // triggers not-found.tsx in this route segment
+    }
 
     // Destructure relevant parameters
     const { tab, query, selected, pin, priceMin, priceMax, sort, brand } = sp;
