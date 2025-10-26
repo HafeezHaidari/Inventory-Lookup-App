@@ -1,12 +1,12 @@
 'use client'
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
-import {getApiBase} from "@/app/api/_utils/base";
+//import {getApiBase} from "@/app/api/_utils/base";
 
 
 const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
-const base = getApiBase();
+//const base = getApiBase();
 
 // Component for creating a new product with a form, including image upload functionality
 const CreateForm = () => {
@@ -71,7 +71,7 @@ const CreateForm = () => {
             "imageUrl": results.url
         };
 
-        const postResult = await fetch(`${base}/products`, {
+        const postResult = await fetch(`/api/proxy/products`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
