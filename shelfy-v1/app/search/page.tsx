@@ -41,13 +41,13 @@ const fetchProducts = async (query?: string, tab?: string, filters?: Filters) =>
 
     // Construct the full URL with query parameters
     const base = getApiBase();
-    const baseSearch = `/api/proxy/products/search`;
+    const baseSearch = `${base}/products/search`;
     const qs = params.toString();
-    const url = qs ? `${baseSearch}?${qs}` : base;
+    const url = qs ? `${baseSearch}?${qs}` : baseSearch;
 
     // Fetch products from the API with revalidation every second
-    const res = await fetch(url, { next: { revalidate: 1 } });
-    if (!res.ok) throw new Error("Fetch failed: " + res.statusText);
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
     const data = await res.json();
 
     // Handle different response formats (array or paginated content)
