@@ -1,10 +1,12 @@
 'use client'
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
+import {getApiBase} from "@/app/api/_utils/base";
 
 
 const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
+const base = getApiBase();
 
 // Component for creating a new product with a form, including image upload functionality
 const CreateForm = () => {
@@ -59,10 +61,6 @@ const CreateForm = () => {
             body: formData
         }).then(res => res.json())
 
-        if (!results.ok) {
-            const text = await results.text(); // Cloudinary returns helpful JSON/text
-            throw new Error(`Cloudinary upload failed ${results.status}: ${text}`);
-        }
         const product = {
             "name": (form.elements.namedItem('productName') as HTMLInputElement).value.trim(),
             "brand": (form.elements.namedItem('productBrand') as HTMLInputElement).value.trim(),
@@ -73,12 +71,18 @@ const CreateForm = () => {
             "imageUrl": results.url
         };
 
-        await fetch('/api/proxy/products', {
+        const postResult = await fetch(`${base}/products`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify([product])
-        }).then(_res => {setState('sent')})
+        }).then()
+
+        if (!postResult.ok) {
+            setState('failed')
+        } else {
+            setState('sent')
+        }
     }
 
 
@@ -264,9 +268,19 @@ const CreateForm = () => {
                             >
                                 Create product
                             </button>
+                            {state === "sending" && (
+                                <p className="text-center mt-4 text-gray-600 font-medium">
+                                    Creating...
+                                </p>
+                            )}
                             {state === "sent" && (
                                 <p className="text-center mt-4 text-green-600 font-medium">
                                     Product Created!
+                                </p>
+                            )}
+                            {state === "failed" && (
+                                <p className="text-center mt-4 text-red-600 font-medium">
+                                    Product Creation Failed!
                                 </p>
                             )}
                         </div>
