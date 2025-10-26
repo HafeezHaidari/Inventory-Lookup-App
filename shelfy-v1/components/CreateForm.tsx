@@ -1,11 +1,10 @@
 'use client'
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDropzone } from 'react-dropzone';
-import {getApiBase} from "@/app/api/_utils/base";
 
-const backendBase = getApiBase();
-const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
+const cloudinaryUploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
 
 // Component for creating a new product with a form, including image upload functionality
 const CreateForm = () => {
@@ -50,8 +49,7 @@ const CreateForm = () => {
         const form = e.target as HTMLFormElement;
 
         const formData = new FormData();
-        formData.append('file', file)
-        // @ts-expect-error -- cloudinary expects upload_preset
+        formData.append('file', file);
         formData.append('upload_preset', cloudinaryUploadPreset);
 
         setState('sending');
@@ -59,8 +57,12 @@ const CreateForm = () => {
         const results = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`, {
             method: 'POST',
             body: formData
-        }).then(res => res.json())
+        })//.then(res => res.json())
 
+        if (!results.ok) {
+            const text = await results.text(); // Cloudinary returns helpful JSON/text
+            throw new Error(`Cloudinary upload failed ${results.status}: ${text}`);
+        }
         const product = {
             "name": (form.elements.namedItem('productName') as HTMLInputElement).value.trim(),
             "brand": (form.elements.namedItem('productBrand') as HTMLInputElement).value.trim(),
