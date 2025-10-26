@@ -57,7 +57,7 @@ const CreateForm = () => {
         const results = await fetch(`https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`, {
             method: 'POST',
             body: formData
-        })//.then(res => res.json())
+        }).then(res => res.json())
 
         if (!results.ok) {
             const text = await results.text(); // Cloudinary returns helpful JSON/text
