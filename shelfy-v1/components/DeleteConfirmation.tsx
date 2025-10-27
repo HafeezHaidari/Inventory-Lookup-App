@@ -4,12 +4,12 @@ import React, {useState} from 'react'
 import DeleteButton from "@/components/DeleteButton";
 import PopupModal from "@/components/LoginLogout/PopupModal";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {getApiBase} from "@/app/api/_utils/base";
+//import {getApiBase} from "@/app/api/_utils/base";
 
 interface Props {
     id: number;
 }
-const base = getApiBase();
+//const base = getApiBase();
 
 // Component for confirming the deletion of a product
 const DeleteConfirmation = ({ id }: Props) => {
@@ -24,7 +24,7 @@ const DeleteConfirmation = ({ id }: Props) => {
 
     // Function to handle the deletion of the product
     const handleDelete = async () => {
-        const response = await fetch(`${base}/products/${id}`, {
+        const response = await fetch(`/api/proxy/products/${id}`, {
             method: 'DELETE',
             credentials: "include",
             headers: {
