@@ -14,7 +14,7 @@ const base = getApiBase();
 const getLandingPageProducts = async () => {
     // Revalidate every second
     const response = await fetch(`${base}/products/search?recommended=true&sort=name,asc`, {
-        next: { revalidate: 1 }
+        next: { revalidate: 0 }
     });
     const data = await response.json();
     if (!response.ok) {
