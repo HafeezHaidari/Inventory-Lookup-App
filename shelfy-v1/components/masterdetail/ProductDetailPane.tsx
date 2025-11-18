@@ -30,7 +30,7 @@ export default function ProductDetailPane({ selected }: Props) {
         setIsEditing(false);
         // Fetch product details from the API based on the selected product ID
         fetch(`${base}/products/${selected}`, { cache: 'no-store' }).then(res => {
-            if (!res.ok) throw new Error("Product not found :(t");
+            if (!res.ok) throw new Error("Product not found :(");
             return res.json();
             })
             // Update state with fetched product data or error message

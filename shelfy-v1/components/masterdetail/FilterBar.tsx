@@ -22,7 +22,7 @@ export default function FilterBar({ tab, query }: Props) {
             .then(data => setBrands(data))
             .catch(err => console.error("Failed to fetch brands", err));
 
-        // Cleanup function (not strictly necessary here)
+        // Cleanup function
         return () => {
         }
     }, []);
