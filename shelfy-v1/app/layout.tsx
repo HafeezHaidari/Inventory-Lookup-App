@@ -40,7 +40,7 @@ export default async function RootLayout({
       <SessionProvider  initialSession={{isAuthenticated: false, user: null}}>
           <header className="shrink-0">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-2 ">
-                  <div className="mb-16 flex justify-start">
+                  <div className="mb-16 flex justify-start invisible">
                       {/* First AuthSection for login/logout functionality */}
                       <AuthSection />
                   </div>
@@ -54,7 +54,7 @@ export default async function RootLayout({
                       </Suspense>
                   </div>
                   {/* Second AuthSection keep the page symmetrical */}
-                  <div className="mb-16 flex justify-end invisible">
+                  <div className="mb-16 flex justify-end ">
                       <AuthSection />
                   </div>
               </div>
