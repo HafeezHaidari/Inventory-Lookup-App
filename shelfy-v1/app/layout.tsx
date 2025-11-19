@@ -54,7 +54,7 @@ export default async function RootLayout({
                       </Suspense>
                   </div>
                   {/* Second AuthSection keep the page symmetrical */}
-                  <div className="mb-16 flex justify-end ">
+                  <div className="mb-16 flex justify-end">
                       <AuthSection />
                   </div>
               </div>
