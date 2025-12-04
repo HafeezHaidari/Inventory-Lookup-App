@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
     const hasAccess = Boolean(req.cookies.get('accessToken'));
     const isProtected = req.nextUrl.pathname.startsWith('/create');
 
